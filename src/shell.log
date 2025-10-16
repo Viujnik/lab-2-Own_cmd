@@ -1,0 +1,161 @@
+2025-10-11 20:55:53 - INFO - Запуск приложения
+2025-10-11 20:56:20 - INFO - Выполнена команда: ls -l C:\Users\kmaka\Downloads
+2025-10-11 20:56:35 - INFO - Выполнена команда: ls C:\Users\kmaka\Downloads
+2025-10-11 20:59:43 - INFO - Запуск приложения
+2025-10-11 20:59:47 - INFO - Выполнена команда: ls -l
+2025-10-11 20:59:55 - INFO - Запуск приложения
+2025-10-11 20:59:57 - INFO - Выполнена команда: ls
+2025-10-11 21:00:00 - INFO - Выполнена команда: ls -l
+2025-10-11 21:00:55 - INFO - Выполнена команда: ls C:
+2025-10-11 21:02:03 - INFO - Запуск приложения
+2025-10-11 21:02:16 - INFO - Запуск приложения
+2025-10-11 21:02:18 - INFO - Выполнена команда: ls
+2025-10-11 21:02:20 - INFO - Выполнена команда: ls -l
+2025-10-11 21:02:29 - INFO - Выполнена команда: ls C:\Users\kmaka
+2025-10-11 21:02:54 - INFO - Выполнена команда: ls -l C:\Users\kmaka
+2025-10-11 21:05:53 - INFO - Запуск приложения
+2025-10-11 21:05:55 - INFO - Выполнена команда: ls
+2025-10-11 21:05:57 - INFO - Выполнена команда: ls -l
+2025-10-11 21:06:00 - INFO - Выполнена команда: ls C:\Users\kmaka
+2025-10-11 21:06:10 - INFO - Выполнена команда: ls -l C:\Users\kmaka
+2025-10-11 21:06:17 - INFO - Выполнена команда: ls C:\Users\kmaka -l
+2025-10-11 21:06:34 - INFO - Запуск приложения
+2025-10-11 21:06:35 - INFO - Выполнена команда: ls
+2025-10-11 21:06:37 - INFO - Выполнена команда: ls -l
+2025-10-11 21:06:40 - INFO - Выполнена команда: ls C:\Users\kmaka
+2025-10-11 21:06:44 - INFO - Выполнена команда: ls -l C:\Users\kmaka
+2025-10-11 21:06:47 - INFO - Выполнена команда: ls C:\Users\kmaka -l
+2025-10-14 20:34:51 - INFO - Запуск приложения
+2025-10-14 20:35:00 - INFO - Выполнена команда: cd ..
+2025-10-14 20:35:51 - INFO - Запуск приложения
+2025-10-14 20:35:54 - INFO - Выполнена команда: cd ..
+2025-10-14 20:36:05 - INFO - Запуск приложения
+2025-10-14 20:36:44 - INFO - Выполнена команда: cd ..
+2025-10-14 20:37:16 - INFO - Запуск приложения
+2025-10-14 20:37:18 - INFO - Выполнена команда: cd ..
+2025-10-14 20:37:37 - INFO - Выполнена команда: cd
+2025-10-14 20:37:45 - INFO - Выполнена команда: cd .. f
+2025-10-14 20:38:07 - INFO - Выполнена команда: cd ..\
+2025-10-14 20:38:13 - INFO - Выполнена команда: cd C:\Users\kmaka\PycharmProjects
+2025-10-14 20:39:53 - INFO - Запуск приложения
+2025-10-14 20:39:57 - INFO - Выполнена команда: cd ..
+2025-10-14 20:40:17 - INFO - Запуск приложения
+2025-10-14 20:40:19 - INFO - Выполнена команда: cd ..
+2025-10-14 20:40:48 - INFO - Запуск приложения
+2025-10-14 20:40:55 - INFO - Выполнена команда: cd ..C:\Users\kmaka\PycharmProjects
+2025-10-14 20:41:32 - INFO - Запуск приложения
+2025-10-14 20:41:34 - INFO - Выполнена команда: cd ..
+2025-10-14 20:41:47 - INFO - Запуск приложения
+2025-10-14 20:41:48 - INFO - Выполнена команда: cd ..
+2025-10-14 20:42:17 - INFO - Запуск приложения
+2025-10-14 20:42:18 - INFO - Выполнена команда: cd ..
+2025-10-14 20:42:26 - INFO - Запуск приложения
+2025-10-14 20:42:27 - INFO - Выполнена команда: cd ..
+2025-10-14 20:43:04 - INFO - Запуск приложения
+2025-10-14 20:43:05 - INFO - Выполнена команда: cd ..
+2025-10-14 20:44:13 - INFO - Запуск приложения
+2025-10-14 20:44:15 - INFO - Выполнена команда: cd ..
+2025-10-14 20:44:18 - INFO - Выполнена команда: ls
+2025-10-14 20:44:31 - INFO - Выполнена команда: cd src
+2025-10-14 21:59:32 - INFO - Запуск приложения
+2025-10-14 21:59:52 - INFO - Запуск приложения
+2025-10-14 22:00:00 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:02:37 - INFO - Запуск приложения
+2025-10-14 22:02:46 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:03:26 - INFO - Выполнена команда: cat C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\main.py
+2025-10-14 22:03:57 - INFO - Запуск приложения
+2025-10-14 22:04:01 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:04:09 - INFO - Выполнена команда: cat C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\main.py
+2025-10-14 22:08:08 - INFO - Запуск приложения
+2025-10-14 22:08:10 - INFO - Выполнена команда: cat
+2025-10-14 22:08:14 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:08:37 - INFO - Выполнена команда: cat C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\main.py
+2025-10-14 22:12:02 - INFO - Запуск приложения
+2025-10-14 22:12:06 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:12:20 - INFO - Выполнена команда: cat C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src
+2025-10-14 22:13:06 - INFO - Запуск приложения
+2025-10-14 22:13:10 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:13:27 - INFO - Запуск приложения
+2025-10-14 22:13:30 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:13:37 - INFO - Запуск приложения
+2025-10-14 22:13:44 - INFO - Выполнена команда: cat shell.log
+2025-10-14 22:17:40 - INFO - Запуск приложения
+2025-10-14 22:17:46 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:19:23 - INFO - Запуск приложения
+2025-10-14 22:19:29 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:22:43 - INFO - Запуск приложения
+2025-10-14 22:25:11 - INFO - Выполнена команда: cat main.py
+2025-10-14 22:33:03 - INFO - Запуск приложения
+2025-10-14 22:33:23 - INFO - Выполнена команда: cat shell.log
+2025-10-14 22:36:48 - INFO - Запуск приложения
+2025-10-14 22:36:52 - INFO - Выполнена команда: cat main.py
+2025-10-15 00:21:34 - INFO - Запуск приложения
+2025-10-15 00:22:02 - INFO - Выполнена команда: cp C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\shell.log C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-15 00:22:43 - INFO - Запуск приложения
+2025-10-15 00:23:05 - INFO - Выполнена команда: cp f
+2025-10-15 00:23:05 - ERROR - Ошибка: Введите 2 аргумента файл и дерикторию.
+2025-10-15 00:23:18 - INFO - Запуск приложения
+2025-10-15 00:23:19 - INFO - Выполнена команда: cp
+2025-10-15 00:23:19 - ERROR - Введите 2 аргумента: файл и дерикторию.
+2025-10-15 00:23:36 - INFO - Выполнена команда: cp C:\Users\kmak C:\Users\kmak
+2025-10-15 00:23:36 - ERROR - Файл C:\Users\kmak не найден.
+2025-10-16 19:35:01 - INFO - Запуск приложения
+2025-10-16 19:35:43 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 19:42:03 - INFO - Запуск приложения
+2025-10-16 19:42:17 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 19:42:17 - ERROR - Файла C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt не существует.
+2025-10-16 19:45:43 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 19:45:52 - INFO - Запуск приложения
+2025-10-16 19:45:54 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 19:45:54 - ERROR - Файла C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt не существует.
+2025-10-16 19:48:58 - INFO - Запуск приложения
+2025-10-16 19:49:08 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 19:49:08 - ERROR - Файла C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt не существует.
+2025-10-16 19:58:22 - INFO - Запуск приложения
+2025-10-16 19:58:25 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 19:58:25 - ERROR - Файла C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt не существует.
+2025-10-16 20:00:12 - INFO - Запуск приложения
+2025-10-16 20:00:18 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 20:02:37 - INFO - Запуск приложения
+2025-10-16 20:02:40 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 20:02:40 - ERROR - Ошибка при перемещении файла: [WinError 183] Невозможно создать файл, так как он уже существует: 'C:\\Users\\kmaka\\PycharmProjects\\lab-1-Own-cmd\\ftf.txt' -> 'C:\\Users\\kmaka\\PycharmProjects\\lab-1-Own-cmd\\src\\sub_functions'
+2025-10-16 20:03:25 - INFO - Запуск приложения
+2025-10-16 20:04:15 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\fuf.txt sub_functions
+2025-10-16 20:04:15 - ERROR - Ошибка при перемещении файла: [WinError 183] Невозможно создать файл, так как он уже существует: 'C:\\Users\\kmaka\\PycharmProjects\\lab-1-Own-cmd\\fuf.txt' -> 'sub_functions'
+2025-10-16 20:04:30 - INFO - Запуск приложения
+2025-10-16 20:04:54 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 20:10:32 - INFO - Запуск приложения
+2025-10-16 20:10:42 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 20:12:03 - INFO - Запуск приложения
+2025-10-16 20:12:12 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\ftf.txt C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\src\sub_functions
+2025-10-16 20:13:18 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\fuf.txt sub_functions
+2025-10-16 20:20:39 - INFO - Запуск приложения
+2025-10-16 20:28:09 - INFO - Запуск приложения
+2025-10-16 20:34:04 - INFO - Запуск приложения
+2025-10-16 20:34:28 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\shell.log E:\books
+2025-10-16 20:34:30 - ERROR - Недостаточно прав для перемещения.
+2025-10-16 20:37:56 - INFO - Запуск приложения
+2025-10-16 20:38:02 - INFO - Запуск приложения
+2025-10-16 20:38:03 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\shell.log E:\books
+2025-10-16 20:38:03 - ERROR - Ошибка при перемещении файла: [WinError 32] Процесс не может получить доступ к файлу, так как этот файл занят другим процессом: 'C:\\Users\\kmaka\\PycharmProjects\\lab-1-Own-cmd\\shell.log'
+2025-10-16 20:38:11 - INFO - Запуск приложения
+2025-10-16 20:38:30 - INFO - Запуск приложения
+2025-10-16 20:38:39 - INFO - Выполнена команда: mv C:\Users\kmaka\PycharmProjects\lab-1-Own-cmd\shell.log E:\books
+2025-10-16 20:38:39 - ERROR - Ошибка при перемещении файла: [WinError 32] Процесс не может получить доступ к файлу, так как этот файл занят другим процессом: 'C:\\Users\\kmaka\\PycharmProjects\\lab-1-Own-cmd\\shell.log'
+2025-10-16 20:43:03 - INFO - Запуск приложения
+2025-10-16 20:43:57 - INFO - Выполнена команда: mv E:\books\Diskra E:\golang
+2025-10-16 20:43:57 - ERROR - Файла E:\books\Diskra не существует.
+2025-10-16 20:45:31 - INFO - Запуск приложения
+2025-10-16 20:46:06 - INFO - Запуск приложения
+2025-10-16 20:46:28 - INFO - Выполнена команда: mv teset.txt E:\books
+2025-10-16 20:46:28 - ERROR - Ошибка при перемещении файла: [WinError 17] Системе не удается переместить файл на другой диск: 'teset.txt' -> 'E:\\books'
+2025-10-16 20:46:43 - INFO - Выполнена команда: mv teset.txt E:/books
+2025-10-16 20:46:43 - ERROR - Ошибка при перемещении файла: [WinError 17] Системе не удается переместить файл на другой диск: 'teset.txt' -> 'E:/books'
+2025-10-16 20:47:55 - INFO - Выполнена команда: mv teset.txt C:\Users\kmaka\PycharmProjects
+2025-10-16 20:47:55 - ERROR - Недостаточно прав для перемещения.
+2025-10-16 20:48:20 - INFO - Выполнена команда: mv teset.txt C:\Users\kmaka\PycharmProjects\Documents
+2025-10-16 20:48:20 - ERROR - Ошибка: C:\Users\kmaka\PycharmProjects\Documents не является директорией, введите директория куда переместить файл.
+2025-10-16 20:48:46 - INFO - Выполнена команда: mv teset.txt C:\Users\kmaka
+2025-10-16 20:48:46 - ERROR - Недостаточно прав для перемещения.
+2025-10-16 20:49:16 - INFO - Выполнена команда: mv teset.txt D:\Games
+2025-10-16 20:49:16 - ERROR - Ошибка при перемещении файла: [WinError 17] Системе не удается переместить файл на другой диск: 'teset.txt' -> 'D:\\Games'

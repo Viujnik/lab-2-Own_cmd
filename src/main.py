@@ -1,50 +1,64 @@
-from ls_sub_functions.ls_dependence import *
+import os
+import sys
 
-app = typer.Typer()
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+from sub_functions.cat_dependences import cat_realisation, cat_args_parse
+from sub_functions.cd_dependences import cd_realisation, cd_args_parse
+from sub_functions.cp_dependences import cp_args_parse, cp_realisation
+from sub_functions.mv_dependences import mv_args_parse, mv_realisation
+from sub_functions.ls_dependences import ls_args_parse, ls_realisation
+from sub_functions.logging_func import logging_command, logger
 
 
-@app.command()
-def ls(func_name: str, path: str = typer.Argument(None),
-       long: bool = typer.Option(False, "-l", "--long", help="Подробный вывод")):
-    """Вывод файлов/директорий"""
-    if func_name == "ls":
+
+def input_shell():
+    while True:
         try:
-            if path:
-                list_path = Path(path)
+            user_input = input(f"{os.getcwd()}> ").strip()
+            if not user_input:
+                continue
+            args = user_input.split()
+            command = args[0]
+            logging_command(command, args[1:])
+            # Смотрим какая команда введена
+            if command == "ls":
+                args_value = ls_args_parse(args[1:])
+                ls_realisation(path=args_value["path"], long=args_value["long"])
+            elif command == "cd":
+                arg_value = cd_args_parse(args[1:])
+                cd_realisation(arg_value)
+            elif command == "cat":
+                arg_value = cat_args_parse(args[1:])
+                cat_realisation(arg_value)
+            elif command == "cp":
+                arg_value = cp_args_parse(args[1:])
+                cp_realisation(arg_value)
+            elif command == "mv":
+                arg_value = mv_args_parse(args[1:])
+                path_from, path_to = arg_value
+                mv_realisation(path_from, path_to)
             else:
-                list_path = Path.cwd()
-            if not list_path.exists():
-                typer.echo(f"ls: Нет такого файла/директории, {list_path}")
-                raise typer.Exit(1)
-            files_in_dir = []
-            for dir_file in list_path.iterdir():
-                if dir_file.name.startswith("."):
-                    continue
-                files_in_dir.append(dir_file)
-            files_in_dir.sort(key=lambda x: x.name, reverse=False)
-            if long:
-                detailed_list(files_in_dir)
-            else:
-                for dir_file in files_in_dir:
-                    if dir_file.is_dir():
-                        typer.echo(typer.style(f"{dir_file.name}/", fg=typer.colors.BLUE))
-                    elif dir_file.is_symlink():
-                        typer.echo(typer.style(f"{dir_file.name}@", fg=typer.colors.CYAN))
-                    elif os.access(dir_file, os.X_OK):
-                        typer.echo(typer.style(f"{dir_file.name}*", fg=typer.colors.GREEN))
-                    else:
-                        typer.echo(dir_file.name)
-        except PermissionError:
-            typer.echo(f"Недостаточно прав для открытия директории {path}", err=True)
-            raise typer.Exit(2)
+                print(f"Неизвестная команда: {command}")
+        except KeyboardInterrupt:
+            print("Выход из интерактивного режима")
+            break
         except Exception as e:
-            typer.echo(f"Неизвестная ошибка: {e}", err=True)
-            raise typer.Exit(1)
+            error_msg = f"Ошибка: {e}"
+            print(error_msg)
 
-@app.command()
-def cd():
-    pass
 
+def unhandled_exception(exc_type, exc_value, exc_traceback):
+    """Обработчик необработанных исключений."""
+    if issubclass(exc_type, KeyboardInterrupt):
+        # Пропускаем KeyboardInterrupt
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+
+
+sys.excepthook = unhandled_exception
 
 if __name__ == "__main__":
-    app()
+    logger.info("Запуск приложения")
+    if len(sys.argv) == 1:
+        input_shell()

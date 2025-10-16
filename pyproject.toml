@@ -1,0 +1,31 @@
+[project]
+name = "lab-1-own-cmd"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+[tool.mypy]
+# Явно указываем базовые пакеты
+explicit_package_bases = true
+
+# Указываем путь для поиска модулей
+mypy_path = "src"
+
+# Исключаем конфликтующие пути
+exclude = [
+    ".*",
+    "build",
+    "dist",
+    "__pycache__",
+]
+
+# Включаем поддержку namespace packages
+namespace_packages = true
+
+# Игнорируем отсутствующие импорты (опционально)
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "src.*"
+ignore_errors = false
