@@ -1,5 +1,6 @@
 import logging
 import os
+from os import stat_result
 from pathlib import Path
 from datetime import datetime
 import stat
@@ -7,13 +8,13 @@ import stat
 
 # Здесь собраны функции, необходимые основной функции - ls, чтобы не загрязнять и так грязный main
 
-def check_access_rights(file) -> str:
+def check_access_rights(file: stat_result) -> str:
     """Возвращает права доступа для файла"""
     rights = stat.filemode(file.st_mode)
     return str(rights)[-9:]
 
 
-def detailed_list(files) -> None:
+def detailed_list(files: list[Path]) -> None:
     """Детальный вывод для флага <-l>"""
     for file in files:
         try:
@@ -80,10 +81,10 @@ def ls_realisation(path: str, long: bool = False) -> None:
         logging.error(error)
 
 
-def ls_args_parse(args: list) -> dict:
+def ls_args_parse(args: list[str]) -> dict[str, object]:
     """Парсит аргументы команды ls и возвращает их наличие/отсутствие."""
     args_value = {
-        'path': False,
+        'path': '',
         'long': False
     }
     i = 0

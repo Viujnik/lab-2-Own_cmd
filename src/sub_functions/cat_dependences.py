@@ -4,7 +4,7 @@ from pathlib import Path
 
 # Здесь собраны функции, необходимые основной функции - cat, чтобы не загрязнять и так грязный main
 
-def cat_args_parse(args: list) -> Path | None:
+def cat_args_parse(args: list[str]) -> Path | None:
     """Проверяет аргумент path функции cat. Возвращает этот путь класса Path или None при ошибке."""
     if args[0]:
         arg = Path(args[0])

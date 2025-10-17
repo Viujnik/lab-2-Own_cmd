@@ -6,7 +6,7 @@ from pathlib import Path
 # Здесь собраны функции, необходимые основной функции - cd, чтобы не загрязнять и так грязный main
 
 
-def cd_args_parse(args: list) -> None | Path:
+def cd_args_parse(args: list[str]) -> None | Path:
     """Проверяет аргумент path функции cd. Возвращает этот путь класса Path или None при ошибке."""
     if args[0]:
         arg = Path(args[0])

@@ -6,7 +6,7 @@ from pathlib import Path
 # Здесь собраны функции, необходимые основной функции - cat, чтобы не загрязнять и так грязный main
 
 
-def cp_args_parse(args: list) -> list:
+def cp_args_parse(args: list[str]) -> list[Path]:
     if len(args) == 2:
         path_from = Path(args[0])
         path_to = Path(args[1])
@@ -25,7 +25,7 @@ def cp_args_parse(args: list) -> list:
         raise Exception(error)
 
 
-def cp_realisation(arg_value: list) -> None:
+def cp_realisation(arg_value: list[Path]) -> None:
     try:
         shutil.copy(arg_value[0], arg_value[1])
     except PermissionError:

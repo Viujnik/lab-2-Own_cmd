@@ -8,11 +8,10 @@ from sub_functions.cd_dependences import cd_realisation, cd_args_parse
 from sub_functions.cp_dependences import cp_args_parse, cp_realisation
 from sub_functions.mv_dependences import mv_args_parse, mv_realisation
 from sub_functions.ls_dependences import ls_args_parse, ls_realisation
-from sub_functions.logging_func import logging_command, logger
+from sub_functions.logging_func import logging_command, logger, unhandled_exception
 
 
-
-def input_shell():
+def input_shell() -> None:
     while True:
         try:
             user_input = input(f"{os.getcwd()}> ").strip()
@@ -24,19 +23,19 @@ def input_shell():
             # Смотрим какая команда введена
             if command == "ls":
                 args_value = ls_args_parse(args[1:])
-                ls_realisation(path=args_value["path"], long=args_value["long"])
+                ls_realisation(path=str(args_value["path"]), long=bool(args_value["long"]))
             elif command == "cd":
                 arg_value = cd_args_parse(args[1:])
-                cd_realisation(arg_value)
+                cd_realisation(str(arg_value))
             elif command == "cat":
                 arg_value = cat_args_parse(args[1:])
-                cat_realisation(arg_value)
+                cat_realisation(str(arg_value))
             elif command == "cp":
-                arg_value = cp_args_parse(args[1:])
-                cp_realisation(arg_value)
+                cp_args = cp_args_parse(args[1:])
+                cp_realisation(cp_args)
             elif command == "mv":
-                arg_value = mv_args_parse(args[1:])
-                path_from, path_to = arg_value
+                mv_args = mv_args_parse(args[1:])
+                path_from, path_to = mv_args
                 mv_realisation(path_from, path_to)
             else:
                 print(f"Неизвестная команда: {command}")
@@ -48,12 +47,7 @@ def input_shell():
             print(error_msg)
 
 
-def unhandled_exception(exc_type, exc_value, exc_traceback):
-    """Обработчик необработанных исключений."""
-    if issubclass(exc_type, KeyboardInterrupt):
-        # Пропускаем KeyboardInterrupt
-        sys.__excepthook__(exc_type, exc_value, exc_traceback)
-        return
+
 
 
 sys.excepthook = unhandled_exception

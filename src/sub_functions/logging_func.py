@@ -1,5 +1,6 @@
 import logging
 import sys
+from typing import Any
 
 
 # Конфигурация логирования
@@ -19,7 +20,7 @@ setup_logging()
 logger = logging.getLogger(__name__)
 
 
-def unhandled_exception(exc_type, exc_value, exc_traceback) -> None:
+def unhandled_exception(exc_type: Any, exc_value: Any, exc_traceback: Any) -> None:
     """Обработчик необработанных исключений."""
     if issubclass(exc_type, KeyboardInterrupt):
         # Пропускаем KeyboardInterrupt
@@ -27,7 +28,7 @@ def unhandled_exception(exc_type, exc_value, exc_traceback) -> None:
         return
 
 
-def logging_command(command: str, args: list) -> None:
+def logging_command(command: str, args: list[str]) -> None:
     """Логирует информацию о вызове команды."""
     full_command = f"{command} {' '.join(args)}".strip()
     logger.info(f"Выполнена команда: {full_command}")

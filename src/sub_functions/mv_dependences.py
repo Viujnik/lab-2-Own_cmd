@@ -6,7 +6,7 @@ from pathlib import Path
 
 # Здесь собраны функции, необходимые основной функции - mv, чтобы не загрязнять и так грязный main
 
-def mv_args_parse(args: list[str]) -> None |list:
+def mv_args_parse(args: list[str]) -> list[str]:
     if len(args) != 2:
         error = "Ошибка: После команды 'mv' введите 2 аргумента - путь к файлу и каталог, куда переместить файл."
         logging.error(error)
@@ -31,10 +31,10 @@ def mv_args_parse(args: list[str]) -> None |list:
 def filesystem_check(path_from: str, path_to: str) -> bool:
     """Проверяет, в одной ли директории находятся файл и каталог назначения"""
     try:
-        path_from = Path(path_from)
-        path_to = Path(path_to)
-        stat1 = os.stat(path_from)
-        stat2 = os.stat(path_to)
+        new_path_from = Path(path_from)
+        new_path_to = Path(path_to)
+        stat1 = os.stat(new_path_from)
+        stat2 = os.stat(new_path_to)
 
         return stat1.st_dev == stat2.st_dev
     except OSError as e:
