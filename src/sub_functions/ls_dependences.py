@@ -38,8 +38,8 @@ def detailed_list(files: list[Path]) -> None:
                 f"{rights} {links_cnt:>2} {file_uid} {file_gid} {file_size:>10} {mtime} {file_name}")  # Вывод доп информации
         except Exception as e:
             error = f"Ошибка чтения файла: {file}: {e}"
-            print(error)
             logging.error(error)
+            raise Exception(error)
 
 
 def ls_realisation(path: str, long: bool = False) -> None:
@@ -51,8 +51,9 @@ def ls_realisation(path: str, long: bool = False) -> None:
             list_path = Path.cwd()
         if not list_path.exists():
             error = f"ls: Нет такого файла/директории, {list_path}"
-            print(error)
             logging.error(error)
+            raise Exception(error)
+
         files_in_dir = []
         for dir_file in list_path.iterdir():  # Получаем все файлы директории, скрытые файлы пропускаем
             if dir_file.name.startswith("."):
@@ -73,12 +74,12 @@ def ls_realisation(path: str, long: bool = False) -> None:
                     print(dir_file.name)
     except PermissionError:
         error = f"Недостаточно прав для открытия директории {path}"
-        print(error)
         logging.error(error)
+        raise Exception(error)
     except Exception as e:
         error = f"Неизвестная ошибка: {e}"
-        print(error)
         logging.error(error)
+        raise Exception(error)
 
 
 def ls_args_parse(args: list[str]) -> dict[str, object]:
@@ -93,7 +94,7 @@ def ls_args_parse(args: list[str]) -> dict[str, object]:
         if arg.startswith("-"):  # с "-" начинаются флаги, у нас только l :(
             if 'l' in args[i]:
                 args_value['long'] = True
-        else: # Остается только path
+        else:  # Остается только path
             args_value["path"] = arg
         i += 1
     return args_value

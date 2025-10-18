@@ -1,8 +1,12 @@
 import os
+import shlex
 import sys
+import logging
+
+from sub_functions.archive_dependences import archive_args_parse, archive_realisation
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
+from sub_functions.rm_dependences import rm_args_parse, rm_realisation
 from sub_functions.cat_dependences import cat_realisation, cat_args_parse
 from sub_functions.cd_dependences import cd_realisation, cd_args_parse
 from sub_functions.cp_dependences import cp_args_parse, cp_realisation
@@ -17,7 +21,7 @@ def input_shell() -> None:
             user_input = input(f"{os.getcwd()}> ").strip()
             if not user_input:
                 continue
-            args = user_input.split()
+            args = shlex.split(user_input, posix=False)
             command = args[0]
             logging_command(command, args[1:])
             # Смотрим какая команда введена
@@ -37,17 +41,28 @@ def input_shell() -> None:
                 mv_args = mv_args_parse(args[1:])
                 path_from, path_to = mv_args
                 mv_realisation(path_from, path_to)
+            elif command == "rm":
+                rm_args = rm_args_parse(args[1:])
+                rm_realisation(rm_args)
+            elif command == "zip":
+                zip_args = archive_args_parse(args)
+                archive_realisation(zip_args)
+            elif command == "tar":
+                tar_args = archive_args_parse(args)
+                archive_realisation(tar_args)
+            elif command == "exit" or "stop_machina":
+                break
             else:
-                print(f"Неизвестная команда: {command}")
+                error_msg = f"Неизвестная команда: {command}"
+                logging.error(error_msg)
+                print(error_msg)
         except KeyboardInterrupt:
             print("Выход из интерактивного режима")
             break
         except Exception as e:
             error_msg = f"Ошибка: {e}"
+            logging.error(error_msg)
             print(error_msg)
-
-
-
 
 
 sys.excepthook = unhandled_exception

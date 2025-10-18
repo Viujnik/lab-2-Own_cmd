@@ -56,15 +56,3 @@ def mv_realisation(path_from: str, path_to: str) -> None:
             error = f"Ошибка при перемещении файла: {e}"
             logging.error(error)
             raise Exception(error)
-    else:
-        try:
-            shutil.copy2(path_from, path_to)
-            os.remove(path_from)
-        except PermissionError:
-            error = "Недостаточно прав для перемещения."
-            logging.error(error)
-            raise PermissionError(error)
-        except OSError as e:
-            error = f"Ошибка при перемещении файла: {e}"
-            logging.error(error)
-            raise OSError(error)

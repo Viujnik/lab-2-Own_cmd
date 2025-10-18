@@ -1,0 +1,14 @@
+[2025-10-18 14:02:15] - INFO - Запуск приложения
+[2025-10-18 14:03:00] - INFO - Выполнена команда: zip C:\Users\kmaka\PycharmProjects\my_fold my_fold_zip.zip
+[2025-10-18 14:21:54] - INFO - Запуск приложения
+[2025-10-18 14:22:09] - INFO - Запуск приложения
+[2025-10-18 14:23:35] - INFO - Запуск приложения
+[2025-10-18 14:23:50] - INFO - Выполнена команда: zip C:\Users\kmaka\PycharmProjects\my_fold my_zip
+[2025-10-18 14:23:50] - ERROR - Неверное имя архива. Для типа zip используйте расширение .zip
+[2025-10-18 14:23:50] - ERROR - Ошибка: Неверное имя архива. Для типа zip используйте расширение .zip
+[2025-10-18 14:24:06] - INFO - Выполнена команда: C:\Users\kmaka\PycharmProjects\my_fold my_zip.zip
+[2025-10-18 14:24:06] - ERROR - Неизвестная команда: C:\Users\kmaka\PycharmProjects\my_fold
+[2025-10-18 14:24:15] - INFO - Выполнена команда: zip C:\Users\kmaka\PycharmProjects\my_fold my_zip
+[2025-10-18 14:24:15] - ERROR - Неверное имя архива. Для типа zip используйте расширение .zip
+[2025-10-18 14:24:15] - ERROR - Ошибка: Неверное имя архива. Для типа zip используйте расширение .zip
+[2025-10-18 14:24:26] - INFO - Выполнена команда: zip C:\Users\kmaka\PycharmProjects\my_fold my_zip.zip
