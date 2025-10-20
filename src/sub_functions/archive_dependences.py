@@ -30,11 +30,6 @@ def archive_args_parse(args: list[str]) -> list[str]:
             error_msg = "Неверное имя архива. Для типа tar используйте расширение .tar.gz"
             logging.error(error_msg)
             raise ValueError(error_msg)
-    else:
-        error_msg = f"Поддерживаются только команды 'zip' и 'tar', получено: {cmd}"
-        logging.error(error_msg)
-        raise ValueError(error_msg)
-
     return args
 
 
@@ -54,5 +49,5 @@ def archive_realisation(args: list[str]) -> None:
             shutil.make_archive(archive_base, "gztar", path_from)
 
     except Exception as e:
-        logging.error(f"Ошибка при создании архива: {str(e)}")
+        logging.error(f"Ошибка при создании архива: {e}.")
         raise

@@ -2,7 +2,9 @@ import os
 import shlex
 import sys
 import logging
+import zipfile
 
+from sub_functions.unarchive_dependences import unarchive_args_parse, unarchive_realisation
 from sub_functions.archive_dependences import archive_args_parse, archive_realisation
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -13,6 +15,9 @@ from sub_functions.cp_dependences import cp_args_parse, cp_realisation
 from sub_functions.mv_dependences import mv_args_parse, mv_realisation
 from sub_functions.ls_dependences import ls_args_parse, ls_realisation
 from sub_functions.logging_func import logging_command, logger, unhandled_exception
+
+with zipfile.ZipFile("test.zip", "w") as zipf:
+    zipf.writestr("test.txt", "This is a test")
 
 
 def input_shell() -> None:
@@ -50,6 +55,14 @@ def input_shell() -> None:
             elif command == "tar":
                 tar_args = archive_args_parse(args)
                 archive_realisation(tar_args)
+            elif command == "unzip":
+                unzip_args = unarchive_args_parse(args)
+                unarchive_realisation(unzip_args)
+            elif command == "untar":
+                untar_args = unarchive_args_parse(args)
+                unarchive_realisation(untar_args)
+            elif command == "grep":
+                pass
             elif command == "exit" or "stop_machina":
                 break
             else:
