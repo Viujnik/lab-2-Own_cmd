@@ -6,7 +6,7 @@ from pathlib import Path
 # Здесь собраны функции, необходимые основной функции - cat, чтобы не загрязнять и так грязный main
 
 
-def cp_args_parse(args: list[str]) -> list[Path]:
+def cp_args_parse(args: list[str]) -> list[str]:
     if len(args) == 2:
         path_from = Path(args[0])
         path_to = Path(args[1])
@@ -18,7 +18,7 @@ def cp_args_parse(args: list[str]) -> list[Path]:
             error = f"Директория {path_from} не найдена."
             logging.error(error)
             raise NotADirectoryError(error)
-        return [path_from, path_to]
+        return [str(path_from), str(path_to)]
     else:
         error = "Введите 2 аргумента: файл и дерикторию."
         logging.error(error)

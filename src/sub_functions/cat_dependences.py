@@ -4,15 +4,14 @@ from pathlib import Path
 
 # Здесь собраны функции, необходимые основной функции - cat, чтобы не загрязнять и так грязный main
 
-def cat_args_parse(args: list[str]) -> Path | None:
+def cat_args_parse(args: list[str]) -> Path:
     """Проверяет аргумент path функции cat. Возвращает этот путь класса Path или None при ошибке."""
     if args[0]:
         arg = Path(args[0])
         if arg.is_dir() or arg.is_symlink() or (not arg.exists()):  # Всякий мусор, кроме файла, нам не нужен
             error = "Для команды cat нужно передать файл или путь к файлу"
-            print(error)
             logging.error(error)
-            return None
+            raise Exception(error)
         else:
             return arg
 
@@ -20,7 +19,7 @@ def cat_args_parse(args: list[str]) -> Path | None:
         error = "Для команды cat ожидается 2-ой аргумент - файл или путь к файлу"
         print(error)
         logging.error(error)
-        return None
+        raise Exception(error)
 
 
 def cat_realisation(path: str) -> None:
