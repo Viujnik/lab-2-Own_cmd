@@ -74,7 +74,7 @@ def undo_realisation(args: dict[str, int]) -> None:
         for record in undoable_commands:
             success = undo_command(record)
             if success:
-                print(f"✓ Отменена команда: {record['command']} {' '.join(record['args'])}")
+                print(f"Отменена команда: {record['command']} {' '.join(record['args'])}")
                 success_count += 1
             else:
                 print(f"✗ Не удалось отменить команду: {record['command']} {' '.join(record['args'])}")

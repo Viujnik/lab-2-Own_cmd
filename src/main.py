@@ -2,13 +2,10 @@ import os
 import shlex
 import sys
 import logging
-
-from sub_functions.undo_dependences import undo_args_parse, undo_realisation, init_trash, cp_with_history, \
-    mv_with_history, rm_with_history, read_history
-from sub_functions.history_dependences import history_args_parse, history_realisation, history_mkdir, add_to_history
-
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
+from sub_functions.undo_dependences import (undo_args_parse, undo_realisation, init_trash, cp_with_history,
+                                            mv_with_history, rm_with_history, read_history)
+from src.sub_functions.history_dependences import history_args_parse, history_realisation, history_mkdir, add_to_history
 from sub_functions.help_func import help_realisation
 from sub_functions.grep_dependences import grep_args_parse, grep_realisation
 from sub_functions.unarchive_dependences import unarchive_args_parse, unarchive_realisation
@@ -56,7 +53,6 @@ def input_shell() -> None:
             elif command == "mv":
                 mv_args = mv_args_parse(args[1:])
                 path_from, path_to = mv_args
-                # Используем версию с историей для поддержки undo
                 mv_with_history(path_from, path_to)
             elif command == "rm":
                 rm_args = rm_args_parse(args[1:])

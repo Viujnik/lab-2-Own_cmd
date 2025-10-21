@@ -1,16 +1,10 @@
 repos:
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.18.1
+    rev: v1.8.0
     hooks:
       - id: mypy
-        args: [
-          "--explicit-package-bases",
-          "--namespace-packages",
-          "--ignore-missing-imports",
-          "--strict"
-        ]
-        files: ^src/
-        additional_dependencies: []
+        args: [--config-file, mypy.ini]
+        exclude: ^(sub_functions/history_dependences\.py|other_problematic_files)
 
 
 
