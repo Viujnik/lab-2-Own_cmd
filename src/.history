@@ -21,3 +21,6 @@
 2025-10-21T23:53:01.469437|print("Диагностика|истории:")|
 2025-10-21T23:53:01.469810|for|record in history:|
 2025-10-21T23:53:26.458446|print(f"-|{record['command']}: {record.get('undo_data', {})}")rm rm /Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt|
+2025-10-22T00:37:53.154688|cp|test.txt sub_functions|src=/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt|dst=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions
+2025-10-22T00:41:04.229359|rm|test.txt|path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt|trash_path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/.trash/20251022_004104_test.txt
+2025-10-22T00:46:04.959962|rm|/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/test.txt|path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/test.txt|trash_path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/.trash/20251022_004604_test.txt

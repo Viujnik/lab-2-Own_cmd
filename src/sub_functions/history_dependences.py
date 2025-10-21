@@ -26,10 +26,18 @@ def add_to_history(command: str, args: list, undo_data: dict = None) -> None:
         args_str = " ".join(args)
 
         if undo_data:
-            undo_str = "|".join(f"{k}={v}" for k, v in undo_data.items())
+            # Сериализуем undo_data в формат: key1=value1|key2=value2
+            undo_parts = []
+            for key, value in undo_data.items():
+                # Заменяем разделители в значениях, чтобы не ломать парсинг
+                safe_value = str(value).replace('|', '%%PIPE%%').replace('=', '%%EQUALS%%')
+                undo_parts.append(f"{key}={safe_value}")
+            undo_str = "|".join(undo_parts)
             record = f"{timestamp}|{command}|{args_str}|{undo_str}\n"
         else:
             record = f"{timestamp}|{command}|{args_str}|\n"
+
+        print(f"DEBUG add_to_history: записываем в файл: {record.strip()}")
 
         # Добавляем в конец файла
         with open(HISTORY_FILE, 'a', encoding='utf-8') as f:
@@ -84,11 +92,19 @@ def read_history() -> list:
                         "undo_data": {}
                     }
 
-                    if len(parts) > 3 and parts[3]:
-                        for item in parts[3].split('|'):
+                    # Парсим undo_data если есть
+                    if len(parts) > 3:
+                        for i in range(3, len(parts)):
+                            item = parts[i]
                             if '=' in item:
                                 key, value = item.split('=', 1)
+                                # Восстанавливаем специальные символы в значениях
+                                value = value.replace('%%PIPE%%', '|').replace('%%EQUALS%%', '=')
                                 record["undo_data"][key] = value
+
+                    # Отладочный вывод для команд rm
+                    if record["command"] == "rm":
+                        print(f"DEBUG read_history: найдена команда rm: {record['undo_data']}")
 
                     history.append(record)
 
