@@ -16,6 +16,7 @@ def history_mkdir() -> None:
                 f.write("")
     except Exception as e:
         logging.error(f"Ошибка инициализации истории: {e}")
+        raise e
 
 
 def add_to_history(command: str, args: list, undo_data: dict = None) -> None:
@@ -26,7 +27,7 @@ def add_to_history(command: str, args: list, undo_data: dict = None) -> None:
         args_str = " ".join(args)
 
         if undo_data:
-            # Сериализуем undo_data в формат: key1=value1|key2=value2
+            # Собираем undo_data в формат: key1=value1|key2=value2
             undo_parts = []
             for key, value in undo_data.items():
                 # Заменяем разделители в значениях, чтобы не ломать парсинг
@@ -37,7 +38,6 @@ def add_to_history(command: str, args: list, undo_data: dict = None) -> None:
         else:
             record = f"{timestamp}|{command}|{args_str}|\n"
 
-        print(f"DEBUG add_to_history: записываем в файл: {record.strip()}")
 
         # Добавляем в конец файла
         with open(HISTORY_FILE, 'a', encoding='utf-8') as f:
@@ -48,6 +48,7 @@ def add_to_history(command: str, args: list, undo_data: dict = None) -> None:
 
     except Exception as e:
         logging.error(f"Ошибка при добавлении в историю: {e}")
+        raise e
 
 
 def clean_history_if_needed() -> None:
@@ -67,6 +68,7 @@ def clean_history_if_needed() -> None:
 
     except Exception as e:
         logging.error(f"Ошибка при очистке истории: {e}")
+        raise e
 
 
 def read_history() -> list:
@@ -92,7 +94,7 @@ def read_history() -> list:
                         "undo_data": {}
                     }
 
-                    # Парсим undo_data если есть
+                    # Парсим undo_data если она есть
                     if len(parts) > 3:
                         for i in range(3, len(parts)):
                             item = parts[i]
@@ -102,14 +104,11 @@ def read_history() -> list:
                                 value = value.replace('%%PIPE%%', '|').replace('%%EQUALS%%', '=')
                                 record["undo_data"][key] = value
 
-                    # Отладочный вывод для команд rm
-                    if record["command"] == "rm":
-                        print(f"DEBUG read_history: найдена команда rm: {record['undo_data']}")
-
                     history.append(record)
 
     except Exception as e:
         logging.error(f"Ошибка при чтении истории: {e}")
+        raise e
 
     return history
 
@@ -137,6 +136,7 @@ def save_history(history: list) -> None:
 
     except Exception as e:
         logging.error(f"Ошибка при сохранении истории: {e}")
+        raise e
 
 
 def history_args_parse(args: list[str]) -> dict[str, int]:
@@ -170,14 +170,8 @@ def history_realisation(args: dict[str, int]) -> None:
 
         if clear:
             Path(HISTORY_FILE).write_text("", encoding='utf-8')
-            print("История команд очищена")
-            return
 
         history = read_history()
-
-        if not history:
-            print("История команд пуста")
-            return
 
         recent_commands = history[-count:] if count < len(history) else history
         for record in recent_commands:
@@ -190,4 +184,4 @@ def history_realisation(args: dict[str, int]) -> None:
     except Exception as e:
         error_msg = f"Ошибка при выводе истории: {e}"
         logging.error(error_msg)
-        raise
+        raise e
