@@ -1,0 +1,7 @@
+2025-10-22T15:35:48.606270|Ошибкаundo||
+2025-10-22T15:55:57.849526|mv|test.txt sub_functions/|src=/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt|dst=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions
+2025-10-23T18:16:24.191321|ls||
+2025-10-23T18:16:26.552708|ls|-l|
+2025-10-23T18:17:03.837301|ls|-l /Users/kostamak/PycharmProjects/lab-2-cmd|
+2025-10-23T18:17:13.118155|ls|-l path|
+2025-10-23T18:18:39.334569|ls|path|
