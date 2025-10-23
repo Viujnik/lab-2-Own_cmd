@@ -32,3 +32,21 @@
 [2025-10-23 18:18:36] - INFO - Запуск приложения
 [2025-10-23 18:18:39] - INFO - Выполнена команда: ls path
 [2025-10-23 18:18:39] - ERROR - ls: Нет такого файла/директории, path
+[2025-10-23 19:07:49] - INFO - Запуск приложения
+[2025-10-23 19:07:53] - INFO - Выполнена команда: cd ddfd
+[2025-10-23 19:07:53] - ERROR - cd: ddfd: No such file or directory
+[2025-10-23 19:07:53] - ERROR - cd: ddfd: Not a directory
+[2025-10-23 19:07:53] - ERROR - cd: ddfd: Нет файла в директории: [Errno 2] No such file or directory: '/Users/kostamak/PycharmProjects/lab-2-cmd/src/ddfd'
+[2025-10-23 19:10:18] - INFO - Запуск приложения
+[2025-10-23 19:10:20] - INFO - Выполнена команда: cd dfd
+[2025-10-23 19:10:20] - ERROR - cd: dfd: No such file or directory
+[2025-10-23 19:10:20] - ERROR - Ошибка: exceptions must derive from BaseException
+[2025-10-23 19:10:43] - INFO - Запуск приложения
+[2025-10-23 19:10:47] - INFO - Выполнена команда: cd dcds
+[2025-10-23 19:10:47] - ERROR - cd: dcds: No such file or directory
+[2025-10-23 19:10:47] - ERROR - Ошибка: cd: dcds: No such file or directory
+[2025-10-23 19:27:44] - INFO - Запуск приложения
+[2025-10-23 19:27:47] - INFO - Выполнена команда: ls dsafaa
+[2025-10-23 19:27:47] - ERROR - Нет такого файла/директории, dsafaa
+[2025-10-23 19:27:47] - ERROR - Неизвестная ошибка: Нет такого файла/директории, dsafaa
+[2025-10-23 19:27:47] - ERROR - Ошибка: Нет такого файла/директории, dsafaa

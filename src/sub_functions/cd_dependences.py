@@ -8,14 +8,13 @@ def cd_args_parse(args: list[str]) -> Path:
     if not args:  # Проверяем, что args не пустой
         error = "Для команды cd ожидается аргумент - path"
         logging.error(error)
-        print(error)
-
+        raise Exception(error)
 
     path_str = args[0]
     if not path_str:  # Проверяем, что путь не пустая строка
         error = "Путь не может быть пустой строкой"
         logging.error(error)
-        print(error)
+        raise Exception(error)
 
     if path_str == "~":
         return Path(os.path.expanduser("~"))
@@ -24,15 +23,15 @@ def cd_args_parse(args: list[str]) -> Path:
 
     # Проверяем существование пути
     if not path.exists():
-        error = f"cd: {path}: No such file or directory"
-        logging.error(error)
-        print(error)
+        error_msg = f"Директория {path} не существует"
+        logging.error(error_msg)
+        raise Exception(error_msg)
 
     # Проверяем, что это директория (не файл)
     if not path.is_dir():
-        error = f"cd: {path}: Not a directory"
-        logging.error(error)
-        print(error)
+        error_msg = f"{path} не является директорией"
+        logging.error(error_msg)
+        raise Exception(error_msg)
 
     return path
 
@@ -44,23 +43,13 @@ def cd_realisation(path: str) -> None:
             new_path = os.path.expanduser("~")
             os.chdir(new_path)
         else:
-            # Получаем абсолютный путь для ясности
+            # Получаем абсолютный путь
             abs_path = os.path.abspath(path)
             os.chdir(abs_path)
 
     except PermissionError as e:
-        error = f"cd: {path}: Отказано в доступе: {e}"
-        logging.error(error)
-        print(error)
-    except FileNotFoundError as e:
-        error = f"cd: {path}: No such file or directory: {e}"
-        logging.error(error)
-        print(error)
-    except NotADirectoryError as e:
-        error = f"cd: {path}: Not a directory: {e}"
-        logging.error(error)
-        print(error)
+        logging.error(e)
+        raise e
     except Exception as e:
-        error = f"cd: {path}: Unexpected error: {e}"
-        logging.error(error)
-        print(error)
+        logging.error(e)
+        raise e

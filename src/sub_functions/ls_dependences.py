@@ -39,14 +39,13 @@ def detailed_list(files: list[Path]) -> None:
             print(f"{rights} {links_cnt:>2} {file_uid} {file_gid} {file_size:>10} {mtime} {display_name}")
 
         except OSError as e:
-            # Обработка ошибок для отдельных файлов без прерывания всей программы
             error_msg = f"Ошибка чтения файла {file}: {e}"
             logging.warning(error_msg)
-            print(error_msg)
+            raise e
         except Exception as e:
             error_msg = f"Неизвестная ошибка с файлом {file}: {e}"
             logging.error(error_msg)
-            print(f"?????????? ? ? ? ? ? {file.name} [unknown error]")
+            raise e
 
 
 def ls_realisation(path: str, long: bool = False) -> None:
@@ -60,10 +59,9 @@ def ls_realisation(path: str, long: bool = False) -> None:
 
         # Проверяем существование пути
         if not list_path.exists():
-            error_msg = f"ls: Нет такого файла/директории, {list_path}"
+            error_msg = f"Нет такого файла/директории, {list_path}"
             logging.error(error_msg)
-            print(error_msg)
-            return
+            raise Exception(error_msg)
 
         # Проверяем, что это директория (если путь указан к файлу, обрабатываем его)
         if list_path.is_file():
@@ -76,11 +74,10 @@ def ls_realisation(path: str, long: bool = False) -> None:
                     if dir_file.name.startswith("."):
                         continue
                     files_in_dir.append(dir_file)
-            except PermissionError:
+            except PermissionError as e:
                 error_msg = f"Недостаточно прав для чтения директории {list_path}"
                 logging.error(error_msg)
-                print(error_msg)
-                return
+                raise e
 
         # Сортируем файлы по имени
         files_in_dir.sort(key=lambda x: x.name, reverse=False)
@@ -104,22 +101,17 @@ def ls_realisation(path: str, long: bool = False) -> None:
                         print(dir_file.name)
 
                 except OSError as e:
-                    error_msg = f"Ошибка доступа к файлу {dir_file}: {e}"
-                    logging.warning(error_msg)
-                    print(error_msg)
+                    logging.warning(e)
+                    raise e
                 except Exception as e:
                     error_msg = f"Неизвестная ошибка с файлом {dir_file}: {e}"
                     logging.error(error_msg)
-                    print(error_msg)
+                    raise e
 
-    except PermissionError:
-        error_msg = f"Недостаточно прав для доступа к {path}"
-        logging.error(error_msg)
-        print(error_msg)
     except Exception as e:
-        error_msg = f"Неизвестная ошибка: {e}"
-        logging.error(error_msg)
-        print(error_msg)
+        # Пробрасываем исключение без дополнительного логирования
+        # т.к. оно уже залогировано в конкретных местах
+        raise e
 
 
 def ls_args_parse(args: list[str]) -> dict[str, object]:
