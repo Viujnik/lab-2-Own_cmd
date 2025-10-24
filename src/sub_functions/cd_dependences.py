@@ -7,13 +7,11 @@ def cd_args_parse(args: list[str]) -> Path:
     """Проверяет аргумент path функции cd. Возвращает этот путь класса Path или None при ошибке."""
     if not args:  # Проверяем, что args не пустой
         error = "Для команды cd ожидается аргумент - path"
-        logging.error(error)
         raise Exception(error)
 
     path_str = args[0]
     if not path_str:  # Проверяем, что путь не пустая строка
         error = "Путь не может быть пустой строкой"
-        logging.error(error)
         raise Exception(error)
 
     if path_str == "~":
@@ -24,13 +22,11 @@ def cd_args_parse(args: list[str]) -> Path:
     # Проверяем существование пути
     if not path.exists():
         error_msg = f"Директория {path} не существует"
-        logging.error(error_msg)
         raise Exception(error_msg)
 
     # Проверяем, что это директория (не файл)
     if not path.is_dir():
         error_msg = f"{path} не является директорией"
-        logging.error(error_msg)
         raise Exception(error_msg)
 
     return path

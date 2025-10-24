@@ -9,7 +9,6 @@ from pathlib import Path
 def unarchive_args_parse(args: list[str]) -> list[str]:
     if len(args) != 2:
         error_msg = f"Ожидается 2 аргумента (cmd, archive_name), передано {len(args)}."
-        logging.error(error_msg)
         raise ValueError(error_msg)
 
     cmd, arch_name = args
@@ -17,7 +16,6 @@ def unarchive_args_parse(args: list[str]) -> list[str]:
     # Проверяем, что архив существует (это файл, а не директория)
     if not Path(arch_name).is_file():
         error_msg = f"Архив {arch_name} не существует."
-        logging.error(error_msg)
         raise FileNotFoundError(error_msg)
 
     # Определяем формат архива на основе расширения
@@ -27,18 +25,15 @@ def unarchive_args_parse(args: list[str]) -> list[str]:
         detected_format = 'gztar'
     else:
         error_msg = f"Неподдерживаемый формат архива: {arch_name}. Поддерживаются .zip и .tar.gz"
-        logging.error(error_msg)
         raise ValueError(error_msg)
 
     # Проверяем соответствие команды и формата архива
     if cmd == "unzip" and detected_format != 'zip':
         error_msg = f"Команда unzip ожидает архив с расширением .zip, получен: {arch_name}"
-        logging.error(error_msg)
         raise ValueError(error_msg)
 
     if cmd == "untar" and detected_format != 'gztar':
         error_msg = f"Команда untar ожидает архив с расширением .tar.gz, получен: {arch_name}"
-        logging.error(error_msg)
         raise ValueError(error_msg)
 
     # Создаем имя папки для распаковки (без расширения)
@@ -61,11 +56,9 @@ def unarchive_realisation(args: list[str]) -> None:
                     bad_file = zip_ref.testzip()
                     if bad_file is not None:
                         error_msg = f"Архив {arch_name} поврежден. Первый поврежденный файл: {bad_file}"
-                        logging.error(error_msg)
                         raise ValueError(error_msg)
             except zipfile.BadZipFile:
                 error_msg = f"Файл {arch_name} не является валидным ZIP-архивом"
-                logging.error(error_msg)
                 raise ValueError(error_msg)
         else:  # archive_format == 'gztar'
             try:
@@ -74,7 +67,6 @@ def unarchive_realisation(args: list[str]) -> None:
                     tar_ref.getmembers()
             except tarfile.ReadError:
                 error_msg = f"Файл {arch_name} не является валидным TAR.GZ-архивом"
-                logging.error(error_msg)
                 raise ValueError(error_msg)
 
         # Создаем папку для распаковки
@@ -85,5 +77,4 @@ def unarchive_realisation(args: list[str]) -> None:
         shutil.unpack_archive(arch_name, extract_path, archive_format)
 
     except Exception as e:
-        logging.error(f"Ошибка при распаковке архива: {e}")
         raise e

@@ -14,25 +14,21 @@ class TestCdCommands(unittest.TestCase):
     """Тесты для команды cd"""
 
     # ТЕСТЫ ДЛЯ cd_args_parse
-    @patch('src.sub_functions.cd_dependences.logging')
-    def test_cd_args_parse_no_args(self, mock_logging):
+    def test_cd_args_parse_no_args(self):
         """Тест cd_args_parse без аргументов - должен выбросить исключение"""
         with self.assertRaises(Exception) as context:
             cd_args_parse([])
 
         # Проверяем что функция выбросила исключение
         self.assertEqual(str(context.exception), "Для команды cd ожидается аргумент - path")
-        mock_logging.error.assert_called_once_with("Для команды cd ожидается аргумент - path")
 
-    @patch('src.sub_functions.cd_dependences.logging')
-    def test_cd_args_parse_empty_string_arg(self, mock_logging):
+    def test_cd_args_parse_empty_string_arg(self):
         """Тест cd_args_parse с пустой строкой - должен выбросить исключение"""
         with self.assertRaises(Exception) as context:
             cd_args_parse([''])
 
         # Проверяем сообщение исключения
         self.assertEqual(str(context.exception), "Путь не может быть пустой строкой")
-        mock_logging.error.assert_called_once_with("Путь не может быть пустой строкой")
 
     @patch('src.sub_functions.cd_dependences.os.path.expanduser')
     def test_cd_args_parse_home_directory(self, mock_expanduser):
@@ -46,9 +42,8 @@ class TestCdCommands(unittest.TestCase):
         self.assertEqual(str(result), '/home/testuser')
         mock_expanduser.assert_called_once_with('~')
 
-    @patch('src.sub_functions.cd_dependences.logging')
     @patch('src.sub_functions.cd_dependences.Path')
-    def test_cd_args_parse_nonexistent_path(self, mock_path, mock_logging):
+    def test_cd_args_parse_nonexistent_path(self, mock_path):
         """Тест cd_args_parse с несуществующим путем - должен выбросить исключение"""
         # Настраиваем мок Path
         mock_path_instance = MagicMock()
@@ -61,11 +56,9 @@ class TestCdCommands(unittest.TestCase):
 
         # Проверяем сообщение исключения
         self.assertEqual(str(context.exception), "Директория /nonexistent/path не существует")
-        mock_logging.error.assert_called_once_with("Директория /nonexistent/path не существует")
 
-    @patch('src.sub_functions.cd_dependences.logging')
     @patch('src.sub_functions.cd_dependences.Path')
-    def test_cd_args_parse_file_instead_of_directory(self, mock_path, mock_logging):
+    def test_cd_args_parse_file_instead_of_directory(self, mock_path):
         """Тест cd_args_parse с путем к файлу (не директории) - должен выбросить исключение"""
         # Настраиваем мок Path - путь существует, но это файл
         mock_path_instance = MagicMock()
@@ -79,7 +72,6 @@ class TestCdCommands(unittest.TestCase):
 
         # Проверяем сообщение исключения
         self.assertEqual(str(context.exception), "/some/file.txt не является директорией")
-        mock_logging.error.assert_called_once_with("/some/file.txt не является директорией")
 
     @patch('src.sub_functions.cd_dependences.Path')
     def test_cd_args_parse_valid_directory(self, mock_path):
@@ -121,8 +113,7 @@ class TestCdCommands(unittest.TestCase):
         mock_os.chdir.assert_called_once_with('/absolute/path')
 
     @patch('src.sub_functions.cd_dependences.os')
-    @patch('src.sub_functions.cd_dependences.logging')
-    def test_cd_realisation_permission_error(self, mock_logging, mock_os):
+    def test_cd_realisation_permission_error(self, mock_os):
         """Тест cd_realisation с ошибкой прав доступа - должен пробросить исключение"""
         mock_os.chdir.side_effect = PermissionError("Access denied")
         mock_os.path.abspath.return_value = '/restricted/path'
@@ -130,12 +121,8 @@ class TestCdCommands(unittest.TestCase):
         with self.assertRaises(PermissionError):
             cd_realisation('/restricted/path')
 
-        # Проверяем логирование
-        mock_logging.error.assert_called_once()
-
     @patch('src.sub_functions.cd_dependences.os')
-    @patch('src.sub_functions.cd_dependences.logging')
-    def test_cd_realisation_file_not_found_error(self, mock_logging, mock_os):
+    def test_cd_realisation_file_not_found_error(self, mock_os):
         """Тест cd_realisation с ошибкой файл не найден - должен пробросить исключение"""
         mock_os.chdir.side_effect = FileNotFoundError("No such file")
         mock_os.path.abspath.return_value = '/nonexistent/path'
@@ -143,21 +130,14 @@ class TestCdCommands(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             cd_realisation('/nonexistent/path')
 
-        # Проверяем логирование
-        mock_logging.error.assert_called_once()
-
     @patch('src.sub_functions.cd_dependences.os')
-    @patch('src.sub_functions.cd_dependences.logging')
-    def test_cd_realisation_general_exception(self, mock_logging, mock_os):
+    def test_cd_realisation_general_exception(self, mock_os):
         """Тест cd_realisation с общей ошибкой - должен пробросить исключение"""
         mock_os.chdir.side_effect = Exception("Unexpected error")
         mock_os.path.abspath.return_value = '/some/path'
 
         with self.assertRaises(Exception):
             cd_realisation('/some/path')
-
-        # Проверяем логирование
-        mock_logging.error.assert_called_once()
 
 
 class TestLsCommands(unittest.TestCase):
@@ -253,9 +233,8 @@ class TestLsCommands(unittest.TestCase):
         self.assertIn('symlink -> /target/path', call_args)
 
     @patch('src.sub_functions.ls_dependences.print')
-    @patch('src.sub_functions.ls_dependences.logging')
     @patch('src.sub_functions.ls_dependences.stat')
-    def test_detailed_list_broken_symlink(self, mock_stat, mock_logging, mock_print):
+    def test_detailed_list_broken_symlink(self, mock_stat, mock_print):
         """Тест детального вывода для битого симлинка"""
         mock_file = MagicMock(spec=Path)
         mock_file.name = 'broken_symlink'
@@ -279,11 +258,9 @@ class TestLsCommands(unittest.TestCase):
         mock_print.assert_called_once()
         call_args = mock_print.call_args[0][0]
         self.assertIn('broken_symlink -> [broken link]', call_args)
-        mock_logging.warning.assert_not_called()
 
-    @patch('src.sub_functions.ls_dependences.logging')
     @patch('src.sub_functions.ls_dependences.stat')
-    def test_detailed_list_os_error(self, mock_stat, mock_logging):
+    def test_detailed_list_os_error(self, mock_stat):
         """Тест детального вывода при ошибке OS - должно выбросить исключение"""
         mock_file = MagicMock(spec=Path)
         mock_file.name = 'problem_file'
@@ -294,12 +271,8 @@ class TestLsCommands(unittest.TestCase):
         with self.assertRaises(OSError):
             detailed_list([mock_file])
 
-        # Проверяем логирование
-        mock_logging.warning.assert_called_once()
-
-    @patch('src.sub_functions.ls_dependences.logging')
     @patch('src.sub_functions.ls_dependences.stat')
-    def test_detailed_list_general_error(self, mock_stat, mock_logging):
+    def test_detailed_list_general_error(self, mock_stat):
         """Тест детального вывода при общей ошибке - должно выбросить исключение"""
         mock_file = MagicMock(spec=Path)
         mock_file.name = 'corrupted_file'
@@ -309,9 +282,6 @@ class TestLsCommands(unittest.TestCase):
         # Должно выбросить Exception
         with self.assertRaises(Exception):
             detailed_list([mock_file])
-
-        # Проверяем логирование
-        mock_logging.error.assert_called_once()
 
     # Тесты для ls_realisation
     @patch('src.sub_functions.ls_dependences.print')
@@ -390,8 +360,7 @@ class TestLsCommands(unittest.TestCase):
         mock_print.assert_called_once_with('symlink@')
 
     @patch('src.sub_functions.ls_dependences.Path')
-    @patch('src.sub_functions.ls_dependences.logging')
-    def test_ls_realisation_nonexistent_path(self, mock_logging, mock_path):
+    def test_ls_realisation_nonexistent_path(self, mock_path):
         """Тест ls с несуществующим путем - должно выбросить исключение"""
         # Настраиваем моки
         mock_path_instance = MagicMock()
@@ -405,11 +374,9 @@ class TestLsCommands(unittest.TestCase):
 
         # Проверяем сообщение исключения
         self.assertEqual(str(context.exception), "Нет такого файла/директории, /nonexistent/path")
-        mock_logging.error.assert_called_once_with("Нет такого файла/директории, /nonexistent/path")
 
     @patch('src.sub_functions.ls_dependences.Path')
-    @patch('src.sub_functions.ls_dependences.logging')
-    def test_ls_realisation_permission_error_on_iterdir(self, mock_logging, mock_path):
+    def test_ls_realisation_permission_error_on_iterdir(self, mock_path):
         """Тест ls с ошибкой прав доступа при итерации - должно выбросить исключение"""
         # Настраиваем моки
         mock_path_obj = MagicMock()
@@ -421,9 +388,6 @@ class TestLsCommands(unittest.TestCase):
         # Должно выбросить PermissionError
         with self.assertRaises(PermissionError):
             ls_realisation('/restricted/path', False)
-
-        # Проверяем логирование
-        mock_logging.error.assert_called_once()
 
     @patch('src.sub_functions.ls_dependences.detailed_list')
     @patch('src.sub_functions.ls_dependences.Path')
@@ -473,9 +437,8 @@ class TestLsCommands(unittest.TestCase):
         mock_print.assert_called_once_with('visible_file')
 
     @patch('src.sub_functions.ls_dependences.Path')
-    @patch('src.sub_functions.ls_dependences.logging')
     @patch('src.sub_functions.ls_dependences.stat')
-    def test_ls_realisation_file_access_error(self, mock_stat, mock_logging, mock_path):
+    def test_ls_realisation_file_access_error(self, mock_stat, mock_path):
         """Тест ls с ошибкой доступа к отдельному файлу - должно выбросить исключение"""
         # Настраиваем моки
         mock_cwd = MagicMock()
@@ -498,9 +461,6 @@ class TestLsCommands(unittest.TestCase):
         # Должно выбросить OSError при обработке problem_file
         with self.assertRaises(OSError):
             ls_realisation('', False)
-
-        # Проверяем что good_file не был обработан (из-за исключения на problem_file)
-        mock_logging.warning.assert_called_once()
 
     @patch('src.sub_functions.ls_dependences.print')
     @patch('src.sub_functions.ls_dependences.Path')

@@ -39,12 +39,8 @@ def detailed_list(files: list[Path]) -> None:
             print(f"{rights} {links_cnt:>2} {file_uid} {file_gid} {file_size:>10} {mtime} {display_name}")
 
         except OSError as e:
-            error_msg = f"Ошибка чтения файла {file}: {e}"
-            logging.warning(error_msg)
             raise e
         except Exception as e:
-            error_msg = f"Неизвестная ошибка с файлом {file}: {e}"
-            logging.error(error_msg)
             raise e
 
 
@@ -60,7 +56,6 @@ def ls_realisation(path: str, long: bool = False) -> None:
         # Проверяем существование пути
         if not list_path.exists():
             error_msg = f"Нет такого файла/директории, {list_path}"
-            logging.error(error_msg)
             raise Exception(error_msg)
 
         # Проверяем, что это директория (если путь указан к файлу, обрабатываем его)
@@ -75,8 +70,6 @@ def ls_realisation(path: str, long: bool = False) -> None:
                         continue
                     files_in_dir.append(dir_file)
             except PermissionError as e:
-                error_msg = f"Недостаточно прав для чтения директории {list_path}"
-                logging.error(error_msg)
                 raise e
 
         # Сортируем файлы по имени
@@ -104,13 +97,9 @@ def ls_realisation(path: str, long: bool = False) -> None:
                     logging.warning(e)
                     raise e
                 except Exception as e:
-                    error_msg = f"Неизвестная ошибка с файлом {dir_file}: {e}"
-                    logging.error(error_msg)
                     raise e
 
     except Exception as e:
-        # Пробрасываем исключение без дополнительного логирования
-        # т.к. оно уже залогировано в конкретных местах
         raise e
 
 

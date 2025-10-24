@@ -1,4 +1,3 @@
-import logging
 import shutil
 from pathlib import Path
 
@@ -12,16 +11,13 @@ def cp_args_parse(args: list[str]) -> list[str]:
         path_to = Path(args[1])
         if not path_from.exists():
             error = f"Файл {path_from} не найден."
-            logging.error(error)
             raise FileNotFoundError(error)
         if not path_to.exists():
             error = f"Директория {path_from} не найдена."
-            logging.error(error)
             raise NotADirectoryError(error)
         return [str(path_from), str(path_to)]
     else:
         error = "Введите 2 аргумента: файл и дерикторию."
-        logging.error(error)
         raise Exception(error)
 
 
@@ -30,5 +26,4 @@ def cp_realisation(arg_value: list[Path]) -> None:
         shutil.copy(arg_value[0], arg_value[1])
     except PermissionError:
         error = "Ошибка: недостаточно прав для копирования файла"
-        logging.error(error)
         raise PermissionError(error)

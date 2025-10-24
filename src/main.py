@@ -2,9 +2,12 @@ import os
 import shlex
 import sys
 import logging
+
+from sub_functions.clear_dependences import clear_realisation
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from sub_functions.undo_dependences import (undo_args_parse, undo_realisation, init_trash, cp_with_history,
-                                            mv_with_history, rm_with_history, read_history)
+                                            mv_with_history, rm_with_history)
 from sub_functions.history_dependences import history_args_parse, history_realisation, history_mkdir, add_to_history
 from sub_functions.help_func import help_realisation
 from sub_functions.grep_dependences import grep_args_parse, grep_realisation
@@ -35,7 +38,6 @@ def input_shell() -> None:
             # Добавляем команду в историю (кроме самих history и undo)
             if command not in ["history", "undo", "cp", "mv", "rm"]:
                 add_to_history(command, args[1:])
-
             # Смотрим какая команда введена
             if command == "ls":
                 args_value = ls_args_parse(args[1:])
@@ -79,11 +81,8 @@ def input_shell() -> None:
             elif command == "undo":
                 undo_args = undo_args_parse(args[1:])
                 undo_realisation(undo_args)
-            elif command == "debug_history":
-                history = read_history()
-                print("Диагностика истории:")
-                for record in history:
-                    print(f"- {record['command']}: {record.get('undo_data', {})}")
+            elif command == "clear":
+                clear_realisation()
             elif command == "help":
                 help_realisation()
             else:

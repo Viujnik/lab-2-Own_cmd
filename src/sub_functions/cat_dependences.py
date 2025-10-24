@@ -1,28 +1,24 @@
-import logging
 from pathlib import Path
 
 
-# Здесь собраны функции, необходимые основной функции - cat, чтобы не загрязнять и так грязный main
-
 def cat_args_parse(args: list[str]) -> Path:
     """Проверяет аргумент path функции cat. Возвращает этот путь класса Path или None при ошибке."""
-    if args[0]:
+    if args and args[0]:
         arg = Path(args[0])
-        if arg.is_dir() or arg.is_symlink() or (not arg.exists()):  # Всякий мусор, кроме файла, нам не нужен
+        if not arg.exists():
+            raise FileNotFoundError(f"Файл {arg} не существует")
+        elif arg.is_dir() or arg.is_symlink():
             error = "Для команды cat нужно передать файл или путь к файлу"
-            logging.error(error)
             raise Exception(error)
         else:
             return arg
-
     else:
         error = "Для команды cat ожидается 2-ой аргумент - файл или путь к файлу"
-        print(error)
-        logging.error(error)
         raise Exception(error)
 
 
 def cat_realisation(path: str) -> None:
+    """Читает и выводит содержимое файла"""
     file_path = Path(path)
     with file_path.open("r", encoding='utf-8') as file:
         print(file.read())

@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime
 
 # Константы
-HISTORY_FILE = ".history"
+HISTORY_FILE = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/.history"
 MAX_HISTORY_SIZE = 100
 
 
@@ -135,7 +135,6 @@ def save_history(history: list) -> None:
             f.writelines(lines)
 
     except Exception as e:
-        logging.error(f"Ошибка при сохранении истории: {e}")
         raise e
 
 
@@ -155,7 +154,6 @@ def history_args_parse(args: list[str]) -> dict[str, int]:
             args_value["count"] = int(arg)
         elif arg.startswith('-'):
             error_msg = f"history: неверная опция '{arg}'"
-            logging.error(error_msg)
             raise ValueError(error_msg)
         i += 1
 
@@ -182,6 +180,4 @@ def history_realisation(args: dict[str, int]) -> None:
             print(f"{cmd_id:4} {timestamp}  {command} {cmd_args}")
 
     except Exception as e:
-        error_msg = f"Ошибка при выводе истории: {e}"
-        logging.error(error_msg)
         raise e

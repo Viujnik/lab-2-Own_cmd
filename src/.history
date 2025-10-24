@@ -9,3 +9,58 @@
 2025-10-23T19:10:20.904993|cd|dfd|
 2025-10-23T19:10:47.314523|cd|dcds|
 2025-10-23T19:27:47.220602|ls|dsafaa|
+2025-10-24T11:25:50.007695|ls|-l|
+2025-10-24T11:26:07.974995|ls|jieofhe|
+2025-10-24T11:27:32.812886|ls|kfjknds|
+2025-10-24T11:29:57.044803|cd|fdsfsghd|
+2025-10-24T11:30:32.308222|cd|dfjhs|
+2025-10-24T11:30:46.366861|cd|dfsh|
+2025-10-24T11:30:56.428077|cd|main.py|
+2025-10-24T11:31:13.477010|cd|main.py|
+2025-10-24T11:33:01.832408|ls|skjdfjh|
+2025-10-24T12:00:05.841824|cat|main.py|
+2025-10-24T12:00:33.049149|cat|/Users/kostamak/PycharmProjects/lab-2-cmd/tests/test_navigation.py|
+2025-10-24T12:13:23.673380|ls||
+2025-10-24T12:13:41.615471|ls||
+2025-10-24T12:26:50.719799|ls|-l|
+2025-10-24T12:26:55.356664|clear||
+2025-10-24T12:27:11.488337|ls|-l|
+2025-10-24T12:27:13.166507|clear||
+2025-10-24T12:31:11.910731|ls|-l|
+2025-10-24T12:31:13.487754|clear||
+2025-10-24T12:36:02.418027|ls|-l|
+2025-10-24T12:36:05.606691|clear||
+2025-10-24T12:36:43.266377|ls|-l|
+2025-10-24T12:36:45.869730|clear||
+2025-10-24T16:57:15.233703|cd|..|
+2025-10-24T20:06:24.564791|ls||
+2025-10-24T20:08:09.104417|zip|/Users/kostamak/PycharmProjects/lab-2-cmd/test /Users/kostamak/PycharmProjects/lab-2-cmd|
+2025-10-24T20:08:28.159717|zip|/Users/kostamak/PycharmProjects/lab-2-cmd/test /Users/kostamak/PycharmProjects/lab-2-cmd/my_zip.zip|
+2025-10-24T20:10:35.951359|unzip|/Users/kostamak/PycharmProjects/lab-2-cmd/my_zip.zip|
+2025-10-24T20:14:15.489691|tar|/Users/kostamak/PycharmProjects/lab-2-cmd/test|
+2025-10-24T20:14:43.958656|tar|/Users/kostamak/PycharmProjects/lab-2-cmd/test test.tar.gz|
+2025-10-24T20:15:16.887053|untar|/Users/kostamak/PycharmProjects/lab-2-cmd/test.tar.tar.gz|
+2025-10-24T20:24:20.592623|grep|sub_functios o -r|
+2025-10-24T20:24:30.504980|grep|-r o sub_functios|
+2025-10-24T20:24:49.597986|grep|sub_functions o -r|
+2025-10-24T20:24:58.236584|grep|sub_functions o -r|
+2025-10-24T20:25:00.232638|Ошибкаgrep|sub_functions o -r|
+2025-10-24T20:25:13.757449|Ошибкаgrep|-r o sub_functions|
+2025-10-24T20:25:32.296745|grep|-r o sub_functions|
+2025-10-24T20:25:51.258164|grep|-r "o" sub_functions|
+2025-10-24T20:26:14.267005|grep|0 sub_functions/help_func|
+2025-10-24T20:27:05.699672|grep|o sub_functions/help_func|
+2025-10-24T20:28:57.098709|grep|0 -r /Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/shell.log|
+2025-10-24T20:29:21.746575|/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/||
+2025-10-24T20:29:36.657723|grep|o -r /Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/shell.log|
+2025-10-24T20:29:53.354023|grep|о -r /Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/shell.log|
+2025-10-24T20:30:10.789743|grep|о -r /Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions|
+2025-10-24T20:33:05.577729|grep|import main.py|
+2025-10-24T20:34:51.005204|grep|import main.py|
+2025-10-24T20:38:04.007931|grep|import -r ..|
+2025-10-24T20:40:08.411556|grep|-r /Users/kostamak/PycharmProjects/lab-2-cmd/src import|
+2025-10-24T20:45:03.123104|grep|args src|
+2025-10-24T20:45:13.529299|grep|args /Users/kostamak/PycharmProjects/lab-2-cmd/src|
+2025-10-24T20:46:02.612107|grep|args /Users/kostamak/PycharmProjects/lab-2-cmd/src -r|
+2025-10-24T20:48:44.384293|пкуз|-ri ARGS /Users/kostamak/PycharmProjects/lab-2-cmd/src|
+2025-10-24T20:48:54.371401|grep|-ri ARGS /Users/kostamak/PycharmProjects/lab-2-cmd/src|

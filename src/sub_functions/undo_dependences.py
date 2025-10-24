@@ -5,8 +5,8 @@ from datetime import datetime
 from src.sub_functions.history_dependences import add_to_history, save_history as save_hist, read_history as read_hist
 
 # Константы
-HISTORY_FILE = ".history"
-TRASH_DIR = ".trash"
+HISTORY_FILE = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash"
+TRASH_DIR = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash"
 
 
 def init_trash() -> None:
@@ -15,7 +15,6 @@ def init_trash() -> None:
         trash_path = Path(TRASH_DIR).absolute()
         trash_path.mkdir(exist_ok=True)
     except Exception as e:
-        logging.error(f"Ошибка инициализации корзины: {e}")
         raise e
 
 
@@ -30,7 +29,6 @@ def undo_args_parse(args: list[str]) -> dict[str, int]:
             args_value["steps"] = int(arg)
         elif arg.startswith('-'):
             error_msg = f"undo: неверная опция '{arg}'"
-            logging.error(error_msg)
             raise ValueError(error_msg)
 
     return args_value
@@ -56,7 +54,6 @@ def undo_realisation(args: dict[str, int]) -> None:
 
         if not history:
             info_msg = "История команд пуста - нечего отменять"
-            logging.info(info_msg)
             raise Exception(info_msg)
 
         # Ищем последние команды cp, mv, rm для отмены
@@ -69,12 +66,10 @@ def undo_realisation(args: dict[str, int]) -> None:
 
         if not undoable_commands:
             error_msg = "Нет команд для отмены (поддерживаются только cp, mv, rm)"
-            logging.error(error_msg)
             raise Exception(error_msg)
 
         if len(undoable_commands) < steps:
             error_msg = f"Недостаточно команд для отмены (найдено {len(undoable_commands)}, требуется {steps})"
-            logging.error(error_msg)
             raise Exception(error_msg)
 
         # Отменяем команды
@@ -90,8 +85,6 @@ def undo_realisation(args: dict[str, int]) -> None:
             save_history(remaining_history)
 
     except Exception as e:
-        error_msg = f"Ошибка при отмене команды: {e}"
-        logging.error(error_msg)
         raise e
 
 
@@ -156,7 +149,6 @@ def undo_mv(undo_data: dict) -> bool:
             return True
         return False
     except Exception as e:
-        logging.error(f"Ошибка при отмене mv: {e}")
         raise e
 
 
@@ -182,7 +174,6 @@ def undo_rm(undo_data: dict) -> bool:
             return False
 
     except Exception as e:
-        logging.error(f"Ошибка при отмене rm: {e}")
         raise e
 
 def cp_with_history(src: str, dst: str) -> None:
@@ -213,7 +204,6 @@ def cp_with_history(src: str, dst: str) -> None:
         add_to_history("cp", [src, dst], undo_data)
 
     except Exception as e:
-        logging.error(f"Ошибка при копировании: {e}")
         raise e
 
 
@@ -233,7 +223,6 @@ def mv_with_history(src: str, dst: str) -> None:
         add_to_history("mv", [src, dst], undo_data)
 
     except Exception as e:
-        logging.error(f"Ошибка при перемещении: {e}")
         raise e
 
 
@@ -243,7 +232,6 @@ def rm_with_history(path: str) -> None:
         path_obj = Path(path)
         if not path_obj.exists():
             error_msg = f"Файл или директория не существует: {path}"
-            logging.error(error_msg)
             raise FileNotFoundError(error_msg)
 
         # Получаем абсолютные пути
@@ -271,5 +259,4 @@ def rm_with_history(path: str) -> None:
         add_to_history("rm", [path], undo_data)
 
     except Exception as e:
-        logging.error(f"Ошибка при удалении {path}: {e}")
         raise e

@@ -29,7 +29,6 @@ def rm_args_parse(args: list[str]) -> dict[str, object]:
         i += 1
     if not parsed_args["path"]:
         error_msg = "Пустой аргумент пути/файла для команды mv."
-        logging.error(error_msg)
         raise Exception(error_msg)
     return parsed_args
 
@@ -40,11 +39,9 @@ def rm_realisation(args: dict[str, object]) -> None:
     r_flag = args["r_flag"]
     if os.path.dirname(os.path.normpath(path)) == os.path.normpath(path):
         error_msg = "Ошибка: нельзя удалить родительский каталог."
-        logging.error(error_msg)
         raise Exception(error_msg)
     elif path == "/" or windows_check(path):
         error_msg = "Ошибка: нельзя удалить корневой каталог."
-        logging.error(error_msg)
         raise Exception(error_msg)
 
     user_confirmation = input(f"Вы уверены, что хотите удалить {path}?\n"
@@ -59,21 +56,16 @@ def rm_realisation(args: dict[str, object]) -> None:
                     shutil.rmtree(path)
                 else:
                     error_msg = f"Нельзя удалить {path}, так как это директория. Попробуйте ввести флаг <-r>."
-                    logging.error(error_msg)
                     raise Exception(error_msg)
         except PermissionError:
             error_msg = f"Недостаточно прав на удаление {path}."
-            logging.error(error_msg)
             raise Exception(error_msg)
         except FileNotFoundError:
             error_msg = f"не удаётся найти {path}."
-            logging.error(error_msg)
             raise FileNotFoundError(error_msg)
         except Exception as e:
             error_msg = f"Произошла ошибка при удалении: {e}."
-            logging.error(error_msg)
             raise Exception(error_msg)
     else:
         message = "Удаление прервано."
-        print(message)
-        logging.error(message)
+        logging.info(message)

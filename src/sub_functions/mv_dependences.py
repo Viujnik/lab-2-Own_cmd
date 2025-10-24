@@ -9,21 +9,17 @@ from pathlib import Path
 def mv_args_parse(args: list[str]) -> list[str]:
     if len(args) != 2:
         error = "Ошибка: После команды 'mv' введите 2 аргумента - путь к файлу и каталог, куда переместить файл."
-        logging.error(error)
         raise Exception(error)
     else:
         path_from, path_to = args
         if not os.path.isdir(path_to):
             error = f"Ошибка: {path_to} не является директорией, введите директория куда переместить файл."
-            logging.error(error)
             raise Exception(error)
         if not os.path.exists(path_from):
             error = f"Файла {path_from} не существует."
-            logging.error(error)
             raise Exception(error)
         if not os.path.exists(path_to):
             error = f"Директории {path_from} не существует."
-            logging.error(error)
             raise Exception(error)
         return [path_from, path_to]
 
@@ -50,9 +46,7 @@ def mv_realisation(path_from: str, path_to: str) -> None:
             shutil.move(path_from, path_to)
         except PermissionError:
             error = "Недостаточно прав для перемещения."
-            logging.error(error)
             raise Exception(error)
         except OSError as e:
             error = f"Ошибка при перемещении файла: {e}"
-            logging.error(error)
             raise Exception(error)
