@@ -106,4 +106,4 @@ tests:
     test_navigation.py
 ```
 ## Тестируйте! Пробуйте!
-###### <span style="color: red;">"А если хочется разобраться как работает этот псевдо-код - welcome to the hell!</span>
+###### <span style="color: red;">А если хочется разобраться как работает этот псевдо-код - welcome to the hell!</span>
