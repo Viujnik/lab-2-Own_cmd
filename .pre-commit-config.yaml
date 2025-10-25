@@ -1,17 +1,18 @@
 repos:
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
+    rev: v1.18.1
     hooks:
       - id: mypy
-        args: [--config-file, mypy.ini]
-        exclude: ^(sub_functions/history_dependences\.py|other_problematic_files)
-
-
+        args: [--config-file=mypy.ini, --show-error-codes, --pretty]
+        additional_dependencies:
+          - types-requests
+          - types-PyYAML
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.12.0
     hooks:
       - id: ruff-check
+        args: [--fix]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0

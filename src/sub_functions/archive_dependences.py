@@ -1,48 +1,88 @@
-import logging
 import shutil
 from pathlib import Path
 
 
-# Здесь собраны функции, необходимые основной функции - archive, чтобы не загрязнять и так грязный main
-
-def archive_args_parse(args: list[str]) -> list[str]:
+def archive_args_parse(args: list) -> tuple:
+    """
+    Парсит аргументы для команд архивации.
+    """
     if len(args) != 3:
-        error_msg = f"Ожидается 3 аргумента (cmd, path_from, archive_name), передано {len(args)}."
-        raise ValueError(error_msg)
+        raise ValueError("Неверное количество аргументов. Используйте: archive <zip|tar> <директория> <имя_архива>")
 
-    cmd, path_from, archive_name = args
+    archive_type = args[0].lower()
+    source_dir = Path(args[1])
+    archive_name = args[2]
 
-    # Проверка существования директории
-    if not Path(path_from).is_dir():
-        error_msg = f"Директория {path_from} не найдена"
-        raise FileNotFoundError(error_msg)
+    if not source_dir.exists():
+        raise FileNotFoundError(f"Директория {source_dir} не найдена")
 
-    # Проверка расширений архивов
-    if cmd == "zip":
-        if not archive_name.endswith(".zip"):
-            error_msg = "Неверное имя архива. Для типа zip используйте расширение .zip"
-            raise ValueError(error_msg)
-    elif cmd == "tar":
-        if not archive_name.endswith(".tar.gz"):
-            error_msg = "Неверное имя архива. Для типа tar используйте расширение .tar.gz"
-            raise ValueError(error_msg)
-    return args
+    if not source_dir.is_dir():
+        raise ValueError(f"{source_dir} не является директорией")
+
+    # Проверяем расширения архивов
+    if archive_type == 'zip' and not archive_name.endswith('.zip'):
+        raise ValueError("Для zip архива имя должно заканчиваться на .zip")
+
+    if archive_type == 'tar' and not (archive_name.endswith('.tar.gz') or archive_name.endswith('.tar')):
+        raise ValueError("Для tar архива имя должно заканчиваться на .tar или .tar.gz")
+
+    return archive_type, source_dir, archive_name
 
 
-def archive_realisation(args: list[str]) -> None:
-    cmd, path_from, archive_name = args
+def archive_realisation(args: list) -> None:
+    """
+    Создает архив указанного типа.
+    """
     try:
-        # Создаем архив в той же директории, что и path_from
-        source_dir = Path(path_from)
-        archive_path = source_dir.parent / archive_name
+        archive_type, source_dir, archive_name = archive_args_parse(args)
 
-        # Убираем расширение для корректной работы make_archive
-        archive_base = str(archive_path.with_suffix(''))
-
-        if cmd == "zip":
-            shutil.make_archive(archive_base, "zip", path_from)
-        else:
-            shutil.make_archive(archive_base, "gztar", path_from)
+        if archive_type == 'zip':
+            _create_zip_archive(source_dir, archive_name)
+        else:  # tar
+            _create_tar_archive(source_dir, archive_name)
 
     except Exception as e:
         raise e
+
+
+def _create_zip_archive(source_dir: Path, archive_name: str) -> None:
+    """Создает ZIP архив с использованием shutil.make_archive."""
+    # Создаем полный путь к архиву
+    archive_path = Path(archive_name)
+    if not archive_path.is_absolute():
+        archive_path = source_dir / archive_path
+
+    # Создаем базовое имя без расширения .zip
+    base_name = archive_path.with_suffix('')
+
+    # Создаем родительские директории, если их нет
+    base_name.parent.mkdir(parents=True, exist_ok=True)
+
+    shutil.make_archive(str(base_name), 'zip', source_dir)
+
+
+def _create_tar_archive(source_dir: Path, archive_name: str) -> None:
+    """Создает TAR архив."""
+    # Определяем формат архива по расширению
+    if archive_name.endswith('.tar.gz'):
+        format_type = 'gztar'
+    else:
+        format_type = 'tar'
+
+    # Создаем полный путь к архиву
+    archive_path = Path(archive_name)
+    if not archive_path.is_absolute():
+        archive_path = source_dir / archive_path
+
+    # Создаем базовое имя без расширения для shutil.make_archive
+    if format_type == 'gztar':
+        # Для .tar.gz удаляем оба расширения
+        base_name = archive_path.with_suffix('').with_suffix('')
+    else:
+        # Для .tar удаляем одно расширение
+        base_name = archive_path.with_suffix('')
+
+    # Создаем родительские директории, если их нет
+    base_name.parent.mkdir(parents=True, exist_ok=True)
+
+    shutil.make_archive(str(base_name), format_type, source_dir)
