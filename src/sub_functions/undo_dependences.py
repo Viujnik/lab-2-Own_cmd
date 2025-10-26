@@ -275,7 +275,5 @@ def rm_with_history(path: str) -> None:
 
         add_to_history("rm", [path], undo_data)
 
-        print(f"Файл {path} успешно удален (перемещен в корзину).")
-
     except Exception as e:
         raise e

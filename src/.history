@@ -1,33 +1,3 @@
-2025-10-24T20:25:32.296745|grep|-r o sub_functions|
-2025-10-24T20:25:51.258164|grep|-r "o" sub_functions|
-2025-10-24T20:26:14.267005|grep|0 sub_functions/help_func|
-2025-10-24T20:27:05.699672|grep|o sub_functions/help_func|
-2025-10-24T20:28:57.098709|grep|0 -r /Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/shell.log|
-2025-10-24T20:29:21.746575|/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/||
-2025-10-24T20:29:36.657723|grep|o -r /Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/shell.log|
-2025-10-24T20:29:53.354023|grep|о -r /Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/shell.log|
-2025-10-24T20:30:10.789743|grep|о -r /Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions|
-2025-10-24T20:33:05.577729|grep|import main.py|
-2025-10-24T20:34:51.005204|grep|import main.py|
-2025-10-24T20:38:04.007931|grep|import -r ..|
-2025-10-24T20:40:08.411556|grep|-r /Users/kostamak/PycharmProjects/lab-2-cmd/src import|
-2025-10-24T20:45:03.123104|grep|args src|
-2025-10-24T20:45:13.529299|grep|args /Users/kostamak/PycharmProjects/lab-2-cmd/src|
-2025-10-24T20:46:02.612107|grep|args /Users/kostamak/PycharmProjects/lab-2-cmd/src -r|
-2025-10-24T20:48:44.384293|пкуз|-ri ARGS /Users/kostamak/PycharmProjects/lab-2-cmd/src|
-2025-10-24T20:48:54.371401|grep|-ri ARGS /Users/kostamak/PycharmProjects/lab-2-cmd/src|
-2025-10-26T11:14:30.238292|cp|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpved5n3pp/source_dir /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpved5n3pp/dest_dir|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpved5n3pp/source_dir|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpved5n3pp/dest_dir
-2025-10-26T11:14:30.239672|cp|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmprj3xkbh6/source.txt /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmprj3xkbh6/dest_dir|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmprj3xkbh6/source.txt|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmprj3xkbh6/dest_dir
-2025-10-26T11:14:30.240803|cp|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpegfz3ja6/source.txt /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpegfz3ja6/dest.txt|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpegfz3ja6/source.txt|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpegfz3ja6/dest.txt
-2025-10-26T11:14:30.242810|mv|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpy1ht68pn/source_dir /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpy1ht68pn/dest_dir|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpy1ht68pn/source_dir|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpy1ht68pn/dest_dir
-2025-10-26T11:14:30.243602|mv|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpxwm1766o/source.txt /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpxwm1766o/dest.txt|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpxwm1766o/source.txt|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpxwm1766o/dest.txt
-2025-10-26T11:14:30.244364|rm|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpk9wlsbv9/source_dir|path=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpk9wlsbv9/source_dir|trash_path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash/20251026_111430_244289_source_dir
-2025-10-26T11:14:30.245002|rm|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkbt77ci9/source.txt|path=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkbt77ci9/source.txt|trash_path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash/20251026_111430_244936_source.txt
-2025-10-26T11:14:30.250929|rm|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpc7sg0cwp/source.txt|path=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpc7sg0cwp/source.txt|trash_path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash/20251026_111430_250852_source.txt
-2025-10-26T11:14:35.046503|cp|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpytc1ig2r/source_dir /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpytc1ig2r/dest_dir|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpytc1ig2r/source_dir|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpytc1ig2r/dest_dir
-2025-10-26T11:14:35.047556|cp|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmphyjno0rn/source.txt /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmphyjno0rn/dest_dir|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmphyjno0rn/source.txt|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmphyjno0rn/dest_dir
-2025-10-26T11:14:35.048538|cp|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkfpxvvi2/source.txt /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkfpxvvi2/dest.txt|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkfpxvvi2/source.txt|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkfpxvvi2/dest.txt
-2025-10-26T11:14:35.050095|mv|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkdyypkj3/source_dir /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkdyypkj3/dest_dir|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkdyypkj3/source_dir|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpkdyypkj3/dest_dir
 2025-10-26T11:14:35.050868|mv|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpro_j8gkm/source.txt /var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpro_j8gkm/dest.txt|src=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpro_j8gkm/source.txt|dst=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpro_j8gkm/dest.txt
 2025-10-26T11:14:35.051624|rm|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpj8fe6drg/source_dir|path=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmpj8fe6drg/source_dir|trash_path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash/20251026_111435_051536_source_dir
 2025-10-26T11:14:35.052261|rm|/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmp2qojgpuy/source.txt|path=/var/folders/11/f5359m7s1dn0jghw_g61gscr0000gn/T/tmp2qojgpuy/source.txt|trash_path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash/20251026_111435_052196_source.txt
@@ -98,3 +68,33 @@
 2025-10-26T12:37:30.272667|mv|source.txt dest.txt|src=/absolute/source.txt|dst=/absolute/dest.txt
 2025-10-26T12:46:14.827382|rm|test.txt|path=<MagicMock name%%EQUALS%%'Path().absolute()' id%%EQUALS%%'4387188304'>|trash_path=<MagicMock name%%EQUALS%%'Path().absolute().__truediv__()' id%%EQUALS%%'4387024608'>
 2025-10-26T12:46:27.040449|rm|test.txt|path=<MagicMock name%%EQUALS%%'Path().absolute()' id%%EQUALS%%'4474154560'>|trash_path=<MagicMock name%%EQUALS%%'Path().absolute().__truediv__()' id%%EQUALS%%'4475487296'>
+2025-10-26T14:41:36.725087|ls|-l /|
+2025-10-26T14:42:12.314215|clear||
+2025-10-26T14:42:21.478922|ls|-l /|
+2025-10-26T14:42:25.615935|ls|-l ~|
+2025-10-26T14:42:31.096977|clear||
+2025-10-26T14:42:34.332416|ls|-l /|
+2025-10-26T14:42:43.498953|ls|-l|
+2025-10-26T14:43:49.510109|clear||
+2025-10-26T14:43:53.565217|ls|-l /|
+2025-10-26T14:43:57.422225|ls|-l|
+2025-10-26T14:44:01.315263|ls||
+2025-10-26T14:44:03.132326|ls|/|
+2025-10-26T14:44:05.367695|clear||
+2025-10-26T14:44:10.329371|cd|src|
+2025-10-26T14:44:13.011186|cd|../..|
+2025-10-26T14:44:25.946050|cd|lab-2-cmd|
+2025-10-26T14:44:27.942070|clear||
+2025-10-26T14:44:38.986398|cat|src/main.pu|
+2025-10-26T14:44:41.133906|clear||
+2025-10-26T14:44:50.212966|cat|src/main.py|
+2025-10-26T14:45:05.037902|clear||
+2025-10-26T14:45:57.706263|cp|src/main.py /Users/kostamak/PycharmProjects/lab-2-cmd|src=/Users/kostamak/PycharmProjects/lab-2-cmd/src/main.py|dst=/Users/kostamak/PycharmProjects/lab-2-cmd/main.py
+2025-10-26T14:46:04.628552|cat|main.py|
+2025-10-26T14:46:07.474531|clear||
+2025-10-26T14:46:31.163701|rm|main.py|path=/Users/kostamak/PycharmProjects/lab-2-cmd/main.py|trash_path=/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash/20251026_144631_163122_main.py
+2025-10-26T14:48:04.544758|exit||
+2025-10-26T14:48:30.536701|clear||
+2025-10-26T14:48:32.086221|ds||
+2025-10-26T14:49:03.419882|exit||
+2025-10-26T14:49:12.486998|exit||

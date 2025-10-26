@@ -88,8 +88,6 @@ def input_shell() -> None:
                 clear_realisation()
             elif command == "help":
                 help_realisation()
-            elif command == "exit":
-                break
             else:
                 error_msg = f"Неизвестная команда: {command}"
                 logging.error(error_msg)
