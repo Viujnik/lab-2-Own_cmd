@@ -9,7 +9,7 @@ from typing import Any
 def setup_logging() -> None:
     """Настройка системы логирования."""
     logging.basicConfig(
-        filename='/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/shell.log',
+        filename='shell.log',
         level=logging.INFO,
         format='[%(asctime)s] - %(levelname)s - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S',
