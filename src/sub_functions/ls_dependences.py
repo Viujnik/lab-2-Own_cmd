@@ -5,6 +5,8 @@ from pathlib import Path
 from datetime import datetime
 import stat
 
+# Здесь собраны функции, необходимые основной функции - ls, чтобы не загрязнять и так грязный main
+
 
 def check_access_rights(file_stat: stat_result) -> str:
     """Возвращает права доступа для файла"""

@@ -3,23 +3,26 @@ import shlex
 import sys
 import logging
 
-from sub_functions.clear_dependences import clear_realisation
-
+# Добавляем путь для корректных импортов
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from sub_functions.undo_dependences import (undo_args_parse, undo_realisation, init_trash, cp_with_history,
+
+# Теперь импортируем модули
+from src.sub_functions.clear_dependences import clear_realisation
+from src.sub_functions.undo_dependences import (undo_args_parse, undo_realisation, init_trash, cp_with_history,
                                             mv_with_history, rm_with_history)
-from sub_functions.history_dependences import history_args_parse, history_realisation, history_mkdir, add_to_history
-from sub_functions.help_func import help_realisation
-from sub_functions.grep_dependences import grep_args_parse, grep_realisation
-from sub_functions.unarchive_dependences import unarchive_args_parse, unarchive_realisation
-from sub_functions.archive_dependences import archive_args_parse, archive_realisation
-from sub_functions.rm_dependences import rm_args_parse
-from sub_functions.cat_dependences import cat_realisation, cat_args_parse
-from sub_functions.cd_dependences import cd_realisation, cd_args_parse
-from sub_functions.cp_dependences import cp_args_parse
-from sub_functions.mv_dependences import mv_args_parse
-from sub_functions.ls_dependences import ls_args_parse, ls_realisation
-from sub_functions.logging_func import logging_command, logger, unhandled_exception
+from src.sub_functions.history_dependences import history_args_parse, history_realisation, history_mkdir, add_to_history
+from src.sub_functions.help_func import help_realisation
+from src.sub_functions.grep_dependences import grep_args_parse, grep_realisation
+from src.sub_functions.unarchive_dependences import unarchive_args_parse, unarchive_realisation
+from src.sub_functions.archive_dependences import archive_args_parse, archive_realisation
+from src.sub_functions.rm_dependences import rm_args_parse
+from src.sub_functions.cat_dependences import cat_realisation, cat_args_parse
+from src.sub_functions.cd_dependences import cd_realisation, cd_args_parse
+from src.sub_functions.cp_dependences import cp_args_parse
+from src.sub_functions.mv_dependences import mv_args_parse
+from src.sub_functions.ls_dependences import ls_args_parse, ls_realisation
+from src.sub_functions.logging_func import logging_command, logger, unhandled_exception
+
 
 history_mkdir()
 init_trash()
@@ -37,7 +40,7 @@ def input_shell() -> None:
 
             # Добавляем команду в историю (кроме самих history и undo)
             if command not in ["history", "undo", "cp", "mv", "rm"]:
-                add_to_history(command, args[1:])
+                add_to_history(command, args[1:], None)
             # Смотрим какая команда введена
             if command == "ls":
                 args_value = ls_args_parse(args[1:])

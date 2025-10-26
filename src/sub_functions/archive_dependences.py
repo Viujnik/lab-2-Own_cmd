@@ -1,8 +1,10 @@
 import shutil
 from pathlib import Path
 
+# Здесь собраны функции, необходимые функции архивирования, чтобы не загрязнять и так грязный main
 
-def archive_args_parse(args: list) -> tuple:
+
+def archive_args_parse(args: list) -> list:
     """
     Парсит аргументы для команд архивации.
     """
@@ -26,7 +28,7 @@ def archive_args_parse(args: list) -> tuple:
     if archive_type == 'tar' and not (archive_name.endswith('.tar.gz') or archive_name.endswith('.tar')):
         raise ValueError("Для tar архива имя должно заканчиваться на .tar или .tar.gz")
 
-    return archive_type, source_dir, archive_name
+    return [archive_type, source_dir, archive_name]
 
 
 def archive_realisation(args: list) -> None:
@@ -55,7 +57,7 @@ def _create_zip_archive(source_dir: Path, archive_name: str) -> None:
     # Создаем базовое имя без расширения .zip
     base_name = archive_path.with_suffix('')
 
-    # Создаем родительские директории, если их нет
+    # Создаем родительские директории, если их нетa
     base_name.parent.mkdir(parents=True, exist_ok=True)
 
     shutil.make_archive(str(base_name), 'zip', source_dir)
@@ -74,9 +76,9 @@ def _create_tar_archive(source_dir: Path, archive_name: str) -> None:
     if not archive_path.is_absolute():
         archive_path = source_dir / archive_path
 
-    # Создаем базовое имя без расширения для shutil.make_archive
+    # Создаем базовое имя без расширения
     if format_type == 'gztar':
-        # Для .tar.gz удаляем оба расширения
+        # Для .tar.gz удаляем расширение
         base_name = archive_path.with_suffix('').with_suffix('')
     else:
         # Для .tar удаляем одно расширение

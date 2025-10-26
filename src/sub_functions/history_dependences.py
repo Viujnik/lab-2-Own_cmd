@@ -2,6 +2,9 @@ import logging
 from pathlib import Path
 from datetime import datetime
 
+# Здесь собраны функции, необходимые основной функции - history, чтобы не загрязнять и так грязный main
+
+
 # Константы
 HISTORY_FILE = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/.history"
 MAX_HISTORY_SIZE = 100
@@ -19,7 +22,7 @@ def history_mkdir() -> None:
         raise e
 
 
-def add_to_history(command: str, args: list, undo_data: dict = None) -> None:
+def add_to_history(command: str, args: list, undo_data=None) -> None:
     """Добавляет команду в историю"""
     try:
         # Форматируем запись
@@ -37,7 +40,6 @@ def add_to_history(command: str, args: list, undo_data: dict = None) -> None:
             record = f"{timestamp}|{command}|{args_str}|{undo_str}\n"
         else:
             record = f"{timestamp}|{command}|{args_str}|\n"
-
 
         # Добавляем в конец файла
         with open(HISTORY_FILE, 'a', encoding='utf-8') as f:
@@ -71,9 +73,9 @@ def clean_history_if_needed() -> None:
         raise e
 
 
-def read_history() -> list:
+def read_history() -> list[dict]:
     """Читает историю команд"""
-    history = []
+    history: list[dict] = []
     try:
         if not Path(HISTORY_FILE).exists():
             return history
@@ -96,13 +98,17 @@ def read_history() -> list:
 
                     # Парсим undo_data если она есть
                     if len(parts) > 3:
+                        # Создаем временную переменную для undo_data
+                        undo_data_dict = record["undo_data"]
                         for i in range(3, len(parts)):
                             item = parts[i]
                             if '=' in item:
                                 key, value = item.split('=', 1)
                                 # Восстанавливаем специальные символы в значениях
                                 value = value.replace('%%PIPE%%', '|').replace('%%EQUALS%%', '=')
-                                record["undo_data"][key] = value
+                                # Явно приводим к dict и присваиваем
+                                if isinstance(undo_data_dict, dict):
+                                    undo_data_dict[key] = value
 
                     history.append(record)
 

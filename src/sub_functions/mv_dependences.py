@@ -1,5 +1,4 @@
 import os
-import shutil
 import logging
 from pathlib import Path
 
@@ -37,16 +36,3 @@ def filesystem_check(path_from: str, path_to: str) -> bool:
         error = f"Ошибка при проверке файловой системы: {e}"
         logging.error(error)
         return False
-
-
-def mv_realisation(path_from: str, path_to: str) -> None:
-    """Перемещает файл с проверкой файловой системы"""
-    if filesystem_check(path_from, path_to):
-        try:
-            shutil.move(path_from, path_to)
-        except PermissionError:
-            error = "Недостаточно прав для перемещения."
-            raise Exception(error)
-        except OSError as e:
-            error = f"Ошибка при перемещении файла: {e}"
-            raise Exception(error)

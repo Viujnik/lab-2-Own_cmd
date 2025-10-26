@@ -1,8 +1,7 @@
-import shutil
 from pathlib import Path
 
 
-# Здесь собраны функции, необходимые основной функции - cat, чтобы не загрязнять и так грязный main
+# Здесь собраны функции, необходимые основной функции - cp, чтобы не загрязнять и так грязный main
 
 
 def cp_args_parse(args: list[str]) -> list[str]:
@@ -19,11 +18,3 @@ def cp_args_parse(args: list[str]) -> list[str]:
     else:
         error = "Введите 2 аргумента: файл и дерикторию."
         raise Exception(error)
-
-
-def cp_realisation(arg_value: list[Path]) -> None:
-    try:
-        shutil.copy(arg_value[0], arg_value[1])
-    except PermissionError:
-        error = "Ошибка: недостаточно прав для копирования файла"
-        raise PermissionError(error)

@@ -1,234 +1,577 @@
-"""
-Тесты для файловых операций: cat
-"""
+import os
+import sys
 import unittest
-from unittest.mock import patch, MagicMock, mock_open
+from pathlib import Path
+from unittest.mock import patch, MagicMock
+from src.sub_functions.cp_dependences import cp_args_parse
+from src.sub_functions.mv_dependences import mv_args_parse, filesystem_check
+from src.sub_functions.rm_dependences import rm_args_parse
+from src.sub_functions.undo_dependences import (
+    cp_with_history, mv_with_history, rm_with_history,
+    undo_args_parse, undo_realisation, undo_rm, undo_cp, undo_mv, undo_command
+)
 
-# Импортируем тестируемые функции
-from src.sub_functions.cat_dependences import cat_args_parse, cat_realisation
+# Добавляем корневую директорию проекта в Python path для корректного импорта
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
+"""
+Тесты файловых операций: cp, mv, rm и их отмена через undo (только мок-тесты)
+"""
 
 
-class TestCatCommands(unittest.TestCase):
-    """Тесты для команды cat"""
+class TestFileOperationsWithMocks(unittest.TestCase):
+    """Тесты для файловых операций с использованием моков"""
 
-    # ТЕСТЫ ДЛЯ cat_args_parse
-    def test_cat_args_parse_no_args(self):
-        """Тест cat_args_parse без аргументов - должен выбросить исключение"""
-        with self.assertRaises(Exception) as context:
-            cat_args_parse([])
+    # ТЕСТЫ ДЛЯ CP ARGS PARSE
+    @patch('src.sub_functions.cp_dependences.Path')
+    def test_cp_args_parse_valid(self, mock_path):
+        """Тест парсинга аргументов cp с валидными путями"""
+        # Используем подход из config_tests.py
+        mock_src = MagicMock()
+        mock_src.exists.return_value = True
+        mock_src.__str__ = MagicMock(return_value='source.txt')
 
-        # Проверяем что функция выбросила исключение
-        self.assertEqual(str(context.exception), "Для команды cat ожидается 2-ой аргумент - файл или путь к файлу")
+        mock_dst = MagicMock()
+        mock_dst.exists.return_value = True
+        mock_dst.__str__ = MagicMock(return_value='dest_dir')
 
-    def test_cat_args_parse_empty_string_arg(self):
-        """Тест cat_args_parse с пустой строкой - должен выбросить исключение"""
-        with self.assertRaises(Exception) as context:
-            cat_args_parse([''])
+        mock_path.side_effect = [mock_src, mock_dst]
 
-        # Проверяем сообщение исключения
-        self.assertEqual(str(context.exception), "Для команды cat ожидается 2-ой аргумент - файл или путь к файлу")
+        result = cp_args_parse(['source.txt', 'dest_dir'])
+        self.assertEqual(result, ['source.txt', 'dest_dir'])
 
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_args_parse_directory_path(self, mock_path):
-        """Тест cat_args_parse с путем к директории - должен выбросить исключение"""
-        # Настраиваем мок Path - путь существует и является директорией
-        mock_path_instance = MagicMock()
-        mock_path_instance.exists.return_value = True
-        mock_path_instance.is_dir.return_value = True
-        mock_path_instance.is_symlink.return_value = False
-        mock_path.return_value = mock_path_instance
-
-        with self.assertRaises(Exception) as context:
-            cat_args_parse(['/some/directory'])
-
-        # Проверяем сообщение исключения
-        self.assertEqual(str(context.exception), "Для команды cat нужно передать файл или путь к файлу")
-
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_args_parse_symlink_path(self, mock_path):
-        """Тест cat_args_parse с путем к симлинку - должен выбросить исключение"""
-        # Настраиваем мок Path - путь существует и является симлинком
-        mock_path_instance = MagicMock()
-        mock_path_instance.exists.return_value = True
-        mock_path_instance.is_dir.return_value = False
-        mock_path_instance.is_symlink.return_value = True
-        mock_path.return_value = mock_path_instance
-
-        with self.assertRaises(Exception) as context:
-            cat_args_parse(['/some/symlink'])
-
-        # Проверяем сообщение исключения
-        self.assertEqual(str(context.exception), "Для команды cat нужно передать файл или путь к файлу")
-
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_args_parse_nonexistent_path(self, mock_path):
-        """Тест cat_args_parse с несуществующим путем - должен выбросить FileNotFoundError"""
-        # Настраиваем мок Path - путь не существует
-        mock_path_instance = MagicMock()
-        mock_path_instance.exists.return_value = False
-        mock_path.return_value = mock_path_instance
+    @patch('src.sub_functions.cp_dependences.Path')
+    def test_cp_args_parse_nonexistent_source(self, mock_path):
+        """Тест парсинга аргументов cp с несуществующим исходным файлом"""
+        mock_src = MagicMock()
+        mock_src.exists.return_value = False
+        mock_path.return_value = mock_src
 
         with self.assertRaises(FileNotFoundError):
-            cat_args_parse(['/nonexistent/file'])
+            cp_args_parse(['/nonexistent/file', 'dest_dir'])
 
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_args_parse_valid_file(self, mock_path):
-        """Тест cat_args_parse с валидным файлом - должен вернуть Path"""
-        # Настраиваем мок Path - валидный файл
-        mock_path_instance = MagicMock()
-        mock_path_instance.exists.return_value = True
-        mock_path_instance.is_dir.return_value = False
-        mock_path_instance.is_symlink.return_value = False
-        mock_path.return_value = mock_path_instance
+    @patch('src.sub_functions.cp_dependences.Path')
+    def test_cp_args_parse_nonexistent_destination(self, mock_path):
+        """Тест парсинга аргументов cp с несуществующей директорией назначения"""
+        mock_src = MagicMock()
+        mock_src.exists.return_value = True
 
-        result = cat_args_parse(['/valid/file.txt'])
+        mock_dst = MagicMock()
+        mock_dst.exists.return_value = False
 
-        # Проверяем что возвращается Path объект
-        self.assertEqual(result, mock_path_instance)
+        mock_path.side_effect = [mock_src, mock_dst]
 
-    # ТЕСТЫ ДЛЯ cat_realisation
-    @patch('src.sub_functions.cat_dependences.print')
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_realisation_success(self, mock_path, mock_print):
-        """Тест cat_realisation с валидным файлом - успешный случай"""
-        # Настраиваем мок Path и файла
-        mock_file_path = MagicMock()
-        mock_path.return_value = mock_file_path
+        with self.assertRaises(NotADirectoryError):
+            cp_args_parse(['source.txt', '/nonexistent/dir'])
 
-        # Мокаем открытие файла и чтение
-        mock_file_content = "Hello, World!\nThis is a test file."
-        with patch('builtins.open', mock_open(read_data=mock_file_content)) as mock_file:
-            # Вызов функции - не должно быть исключений
-            cat_realisation('/valid/file.txt')
+    def test_cp_args_parse_insufficient_args(self):
+        """Тест парсинга аргументов cp с недостаточным количеством аргументов"""
+        with self.assertRaises(Exception) as context:
+            cp_args_parse(['source.txt'])
+        self.assertIn("Введите 2 аргумента", str(context.exception))
 
-            # Проверяем вызовы
-            mock_path.assert_called_once_with('/valid/file.txt')
-            mock_file.assert_called_once_with(mock_file_path, "r", encoding='utf-8')
-            mock_print.assert_called_once_with(mock_file_content)
+    # ТЕСТЫ ДЛЯ MV ARGS PARSE
+    @patch('os.path.isdir')
+    @patch('os.path.exists')
+    def test_mv_args_parse_valid(self, mock_exists, mock_isdir):
+        """Тест парсинга аргументов mv с валидными путями"""
+        mock_exists.side_effect = [True, True]  # Оба пути существуют
+        mock_isdir.return_value = True  # Второй путь - директория
 
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_realisation_file_not_found(self, mock_path):
-        """Тест cat_realisation с несуществующим файлом - должен выбросить FileNotFoundError"""
-        # Настраиваем мок Path
-        mock_file_path = MagicMock()
-        mock_path.return_value = mock_file_path
+        result = mv_args_parse(['source.txt', 'dest_dir'])
+        self.assertEqual(result, ['source.txt', 'dest_dir'])
 
-        # Мокаем открытие файла чтобы выбросить FileNotFoundError
-        with patch('builtins.open', side_effect=FileNotFoundError("File not found")):
-            with self.assertRaises(FileNotFoundError):
-                cat_realisation('/nonexistent/file.txt')
+    @patch('os.path.isdir')
+    @patch('os.path.exists')
+    def test_mv_args_parse_nonexistent_source(self, mock_exists, mock_isdir):
+        """Тест парсинга аргументов mv с несуществующим исходным файлом"""
+        mock_exists.side_effect = [False, True]  # Исходный файл не существует
+        mock_isdir.return_value = True  # Второй путь - директория
 
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_realisation_permission_error(self, mock_path):
-        """Тест cat_realisation с файлом без прав доступа - должен выбросить PermissionError"""
-        # Настраиваем мок Path
-        mock_file_path = MagicMock()
-        mock_path.return_value = mock_file_path
+        with self.assertRaises(Exception) as context:
+            mv_args_parse(['/nonexistent/file', 'dest_dir'])
+        self.assertIn("Файла /nonexistent/file не существует", str(context.exception))
 
-        # Мокаем открытие файла чтобы выбросить PermissionError
-        with patch('builtins.open', side_effect=PermissionError("Permission denied")):
-            with self.assertRaises(PermissionError):
-                cat_realisation('/restricted/file.txt')
+    @patch('os.path.exists')
+    @patch('os.path.isdir')
+    def test_mv_args_parse_not_directory(self, mock_isdir, mock_exists):
+        """Тест парсинга аргументов mv когда назначение не директория"""
+        mock_exists.return_value = True
+        mock_isdir.return_value = False  # Назначение не директория
 
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_realisation_unicode_error(self, mock_path):
-        """Тест cat_realisation с файлом в неправильной кодировке - должен выбросить UnicodeError"""
-        # Настраиваем мок Path
-        mock_file_path = MagicMock()
-        mock_path.return_value = mock_file_path
+        with self.assertRaises(Exception) as context:
+            mv_args_parse(['source.txt', 'not_a_dir'])
+        self.assertIn("не является директорией", str(context.exception))
 
-        # Мокаем открытие файла чтобы выбросить UnicodeDecodeError
-        with patch('builtins.open', side_effect=UnicodeDecodeError('utf-8', b'\x00', 0, 1, 'invalid start byte')):
-            with self.assertRaises(UnicodeDecodeError):
-                cat_realisation('/invalid/encoding/file.txt')
+    def test_mv_args_parse_insufficient_args(self):
+        """Тест парсинга аргументов mv с недостаточным количеством аргументов"""
+        with self.assertRaises(Exception) as context:
+            mv_args_parse(['source.txt'])
+        self.assertIn("2 аргумента", str(context.exception))
 
-    @patch('src.sub_functions.cat_dependences.print')
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_realisation_empty_file(self, mock_path, mock_print):
-        """Тест cat_realisation с пустым файлом - успешный случай"""
-        # Настраиваем мок Path
-        mock_file_path = MagicMock()
-        mock_path.return_value = mock_file_path
+    # ТЕСТЫ ДЛЯ FILESYSTEM_CHECK
+    @patch('os.stat')
+    def test_filesystem_check_same_device(self, mock_stat):
+        """Тест проверки файловой системы - файлы на одном устройстве"""
+        mock_stat1 = MagicMock()
+        mock_stat1.st_dev = 1
 
-        # Мокаем открытие пустого файла
-        with patch('builtins.open', mock_open(read_data="")):
-            # Вызов функции - не должно быть исключений
-            cat_realisation('/empty/file.txt')
+        mock_stat2 = MagicMock()
+        mock_stat2.st_dev = 1
 
-            # Проверяем вызовы
-            mock_path.assert_called_once_with('/empty/file.txt')
-            mock_print.assert_called_once_with("")
+        mock_stat.side_effect = [mock_stat1, mock_stat2]
 
-    @patch('src.sub_functions.cat_dependences.print')
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_realisation_large_file(self, mock_path, mock_print):
-        """Тест cat_realisation с большим файлом - успешный случай"""
-        # Настраиваем мок Path
-        mock_file_path = MagicMock()
-        mock_path.return_value = mock_file_path
+        result = filesystem_check('/path1', '/path2')
+        self.assertTrue(result)
 
-        # Создаем большое содержимое файла
-        large_content = "Line " + "x" * 1000 + "\n"
-        large_content = large_content * 100  # 100 строк по 1000+ символов
+    @patch('os.stat')
+    def test_filesystem_check_different_devices(self, mock_stat):
+        """Тест проверки файловой системы - файлы на разных устройствах"""
+        mock_stat1 = MagicMock()
+        mock_stat1.st_dev = 1
 
-        # Мокаем открытие файла с большим содержимым
-        with patch('builtins.open', mock_open(read_data=large_content)):
-            # Вызов функции - не должно быть исключений
-            cat_realisation('/large/file.txt')
+        mock_stat2 = MagicMock()
+        mock_stat2.st_dev = 2
 
-            # Проверяем вызовы
-            mock_path.assert_called_once_with('/large/file.txt')
-            mock_print.assert_called_once_with(large_content)
+        mock_stat.side_effect = [mock_stat1, mock_stat2]
 
-    @patch('src.sub_functions.cat_dependences.print')
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_realisation_multiline_file(self, mock_path, mock_print):
-        """Тест cat_realisation с многострочным файлом - успешный случай"""
-        # Настраиваем мок Path
-        mock_file_path = MagicMock()
-        mock_path.return_value = mock_file_path
+        result = filesystem_check('/path1', '/path2')
+        self.assertFalse(result)
 
-        # Многострочное содержимое
-        multiline_content = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
+    @patch('os.stat')
+    def test_filesystem_check_os_error(self, mock_stat):
+        """Тест проверки файловой системы с ошибкой OS"""
+        mock_stat.side_effect = OSError("Permission denied")
 
-        # Мокаем открытие файла с многострочным содержимым
-        with patch('builtins.open', mock_open(read_data=multiline_content)):
-            # Вызов функции - не должно быть исключений
-            cat_realisation('/multiline/file.txt')
+        result = filesystem_check('/path1', '/path2')
+        self.assertFalse(result)
 
-            # Проверяем вызовы
-            mock_path.assert_called_once_with('/multiline/file.txt')
-            mock_print.assert_called_once_with(multiline_content)
+    # ТЕСТЫ ДЛЯ RM ARGS PARSE
+    @patch('src.sub_functions.rm_dependences.os.path.normpath')
+    def test_rm_args_parse_valid_without_flag(self, mock_normpath):
+        """Тест парсинга аргументов rm без флага -r"""
+        mock_normpath.return_value = '/test/path'
+
+        result = rm_args_parse(['/test/path'])
+        self.assertEqual(result, {
+            "r_flag": False,
+            "path": '/test/path'
+        })
+
+    @patch('src.sub_functions.rm_dependences.os.path.normpath')
+    def test_rm_args_parse_valid_with_flag(self, mock_normpath):
+        """Тест парсинга аргументов rm с флагом -r"""
+        mock_normpath.return_value = '/test/path'
+
+        result = rm_args_parse(['-r', '/test/path'])
+        self.assertEqual(result, {
+            "r_flag": True,
+            "path": '/test/path'
+        })
+
+    @patch('src.sub_functions.rm_dependences.os.path.normpath')
+    def test_rm_args_parse_mixed_order(self, mock_normpath):
+        """Тест парсинга аргументов rm со смешанным порядком"""
+        mock_normpath.return_value = '/test/path'
+
+        result = rm_args_parse(['/test/path', '-r'])
+        self.assertEqual(result, {
+            "r_flag": True,
+            "path": '/test/path'
+        })
+
+    def test_rm_args_parse_no_path(self):
+        """Тест парсинга аргументов rm без пути"""
+        with self.assertRaises(Exception) as context:
+            rm_args_parse(['-r'])
+        self.assertIn("Пустой аргумент пути/файла", str(context.exception))
+
+    # ТЕСТЫ ДЛЯ CP С ИСТОРИЕЙ
+    @patch('src.sub_functions.undo_dependences.add_to_history')
+    @patch('src.sub_functions.undo_dependences.shutil.copy2')
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_cp_with_history_file_to_dir(self, mock_path, mock_copy2, mock_add_history):
+        """Тест копирования файла в директорию с записью в историю"""
+        # Настраиваем моки с правильными путями
+        mock_src_path = MagicMock()
+        mock_src_path.is_file.return_value = True
+        mock_src_path.absolute.return_value = Path("/absolute/source.txt")
+        mock_src_path.name = "source.txt"
+
+        mock_dst_path = MagicMock()
+        mock_dst_path.is_dir.return_value = True
+        mock_dst_path.absolute.return_value = Path("/absolute/dest_dir")
+
+        mock_final_path = MagicMock()
+        mock_final_path.__str__ = MagicMock(return_value="/absolute/dest_dir/source.txt")
+
+        mock_dst_path.__truediv__.return_value = mock_final_path
+
+        mock_path.side_effect = [mock_src_path, mock_dst_path]
+
+        cp_with_history("source.txt", "dest_dir")
+
+        # Проверяем вызовы
+        mock_copy2.assert_called_once_with("source.txt", mock_final_path)
+        mock_add_history.assert_called_once()
+
+    @patch('src.sub_functions.undo_dependences.add_to_history')
+    @patch('src.sub_functions.undo_dependences.shutil.copy2')
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_cp_with_history_file_to_file(self, mock_path, mock_copy2, mock_add_history):
+        """Тест копирования файла в файл с записью в историю"""
+        # Настраиваем моки
+        mock_src_path = MagicMock()
+        mock_src_path.is_file.return_value = True
+        mock_src_path.absolute.return_value = Path("/absolute/source.txt")
+
+        mock_dst_path = MagicMock()
+        mock_dst_path.is_dir.return_value = False
+        mock_dst_path.absolute.return_value = Path("/absolute/dest.txt")
+
+        mock_path.side_effect = [mock_src_path, mock_dst_path]
+
+        cp_with_history("source.txt", "dest.txt")
+
+        # Проверяем вызовы
+        mock_copy2.assert_called_once_with("source.txt", "dest.txt")
+        mock_add_history.assert_called_once()
+
+    @patch('src.sub_functions.undo_dependences.shutil.copy2')
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_cp_with_history_permission_error(self, mock_path, mock_copy2):
+        """Тест копирования с ошибкой прав доступа"""
+        # Настраиваем моки
+        mock_src_path = MagicMock()
+        mock_src_path.is_file.return_value = True
+        mock_src_path.absolute.return_value = Path("/absolute/source.txt")
+
+        mock_dst_path = MagicMock()
+        mock_dst_path.is_dir.return_value = True
+        mock_dst_path.absolute.return_value = Path("/absolute/dest_dir")
+
+        mock_path.side_effect = [mock_src_path, mock_dst_path]
+
+        mock_copy2.side_effect = PermissionError("Permission denied")
+
+        with self.assertRaises(PermissionError):
+            cp_with_history("source.txt", "dest_dir")
+
+    # ТЕСТЫ ДЛЯ RM С ИСТОРИЕЙ (С ПОДТВЕРЖДЕНИЕМ)
+    @patch('src.sub_functions.undo_dependences.add_to_history')
+    @patch('src.sub_functions.undo_dependences.shutil.move')
+    @patch('src.sub_functions.undo_dependences.Path')
+    @patch('builtins.input')
+    def test_rm_with_history_file_confirmed(self, mock_input, mock_path, mock_move, mock_add_history):
+        """Тест удаления файла с подтверждением и записью в историю"""
+        # Настраиваем моки
+        mock_input.return_value = 'y'  # Пользователь подтверждает удаление
+
+        mock_path_obj = MagicMock()
+        mock_path_obj.exists.return_value = True
+        mock_path_obj.absolute.return_value = Path("/absolute/test.txt")
+        mock_path_obj.name = "test.txt"
+
+        # Мокаем корзину
+        with patch('src.sub_functions.undo_dependences.TRASH_DIR', '/absolute/.trash'):
+            with patch('src.sub_functions.undo_dependences.Path') as mock_trash_path:
+                mock_trash_dir = MagicMock()
+                mock_trash_dir.mkdir.return_value = None
+                mock_trash_path.return_value = mock_trash_dir
+
+                rm_with_history("test.txt")
+
+        # Проверяем вызовы
+        mock_move.assert_called_once()
+        mock_add_history.assert_called_once()
+
+    @patch('src.sub_functions.undo_dependences.Path')
+    @patch('builtins.input')
+    def test_rm_with_history_cancelled(self, mock_input, mock_path):
+        """Тест отмены удаления файла"""
+        # Настраиваем моки
+        mock_input.return_value = 'n'  # Пользователь отменяет удаление
+
+        mock_path_obj = MagicMock()
+        mock_path_obj.exists.return_value = True
+        mock_path.return_value = mock_path_obj
+
+        rm_with_history("test.txt")
+
+        # Проверяем, что удаление не произошло
+        mock_input.assert_called_once()
+        # Другие функции не должны вызываться
+
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_rm_with_history_nonexistent_file(self, mock_path):
+        """Тест удаления несуществующего файла"""
+        mock_path_obj = MagicMock()
+        mock_path_obj.exists.return_value = False
+        mock_path.return_value = mock_path_obj
+
+        with self.assertRaises(FileNotFoundError):
+            rm_with_history("/nonexistent/file")
+
+    # ТЕСТЫ ДЛЯ MV С ИСТОРИЕЙ
+    @patch('src.sub_functions.undo_dependences.add_to_history')
+    @patch('src.sub_functions.undo_dependences.shutil.move')
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_mv_with_history_file(self, mock_path, mock_move, mock_add_history):
+        """Тест перемещения файла с записью в историю"""
+        # Настраиваем моки
+        mock_src_path = MagicMock()
+        mock_src_path.absolute.return_value = Path("/absolute/source.txt")
+
+        mock_dst_path = MagicMock()
+        mock_dst_path.absolute.return_value = Path("/absolute/dest.txt")
+
+        mock_path.side_effect = [mock_src_path, mock_dst_path]
+
+        mv_with_history("source.txt", "dest.txt")
+
+        # Проверяем вызовы
+        mock_move.assert_called_once_with("source.txt", "dest.txt")
+        mock_add_history.assert_called_once()
+
+    # ТЕСТЫ ДЛЯ UNDO
+    def test_undo_args_parse_default(self):
+        """Тест парсинга аргументов undo по умолчанию"""
+        result = undo_args_parse([])
+        self.assertEqual(result, {"steps": 1})
+
+    def test_undo_args_parse_with_steps(self):
+        """Тест парсинга аргументов undo с указанием количества шагов"""
+        result = undo_args_parse(["3"])
+        self.assertEqual(result, {"steps": 3})
+
+    def test_undo_args_parse_invalid_option(self):
+        """Тест парсинга аргументов undo с неверной опцией"""
+        with self.assertRaises(ValueError) as context:
+            undo_args_parse(["-x"])
+        self.assertIn("неверная опция", str(context.exception))
+
+    @patch('src.sub_functions.undo_dependences.read_history')
+    def test_undo_realisation_no_history(self, mock_read):
+        """Тест отмены при пустой истории"""
+        mock_read.return_value = []
+        with self.assertRaises(Exception) as context:
+            undo_realisation({"steps": 1})
+        self.assertIn("История команд пуста", str(context.exception))
+
+    @patch('src.sub_functions.undo_dependences.read_history')
+    @patch('src.sub_functions.undo_dependences.save_history')
+    @patch('src.sub_functions.undo_dependences.undo_command')
+    def test_undo_realisation_success(self, mock_undo_command, mock_save_history, mock_read_history):
+        """Тест успешной отмены команд"""
+        # Мокаем историю с командами для отмены
+        mock_history = [
+            {"command": "cp", "undo_data": {"src": "/src", "dst": "/dst"}},
+            {"command": "rm", "undo_data": {"path": "/path", "trash_path": "/trash"}}
+        ]
+        mock_read_history.return_value = mock_history
+        mock_undo_command.return_value = True
+
+        undo_realisation({"steps": 2})
+
+        self.assertEqual(mock_undo_command.call_count, 2)
+        mock_save_history.assert_called_once()
+
+    @patch('src.sub_functions.undo_dependences.read_history')
+    def test_undo_realisation_no_undoable_commands(self, mock_read):
+        """Тест отмены когда нет команд для отмены"""
+        mock_read.return_value = [
+            {"command": "ls", "args": ["-l"]},  # Не поддерживается для отмены
+            {"command": "cat", "args": ["file.txt"]}  # Не поддерживается для отмены
+        ]
+        with self.assertRaises(Exception) as context:
+            undo_realisation({"steps": 1})
+        self.assertIn("Нет команд для отмены", str(context.exception))
+
+    # ТЕСТЫ ДЛЯ UNDO_COMMAND
+    @patch('src.sub_functions.undo_dependences.undo_cp')
+    def test_undo_command_cp(self, mock_undo_cp):
+        """Тест отмены команды cp"""
+        mock_undo_cp.return_value = True
+        record = {"command": "cp", "undo_data": {"src": "/src", "dst": "/dst"}}
+
+        result = undo_command(record)
+
+        self.assertTrue(result)
+        mock_undo_cp.assert_called_once_with({"src": "/src", "dst": "/dst"})
+
+    @patch('src.sub_functions.undo_dependences.undo_mv')
+    def test_undo_command_mv(self, mock_undo_mv):
+        """Тест отмены команды mv"""
+        mock_undo_mv.return_value = True
+        record = {"command": "mv", "undo_data": {"src": "/src", "dst": "/dst"}}
+
+        result = undo_command(record)
+
+        self.assertTrue(result)
+        mock_undo_mv.assert_called_once_with({"src": "/src", "dst": "/dst"})
+
+    @patch('src.sub_functions.undo_dependences.undo_rm')
+    def test_undo_command_rm(self, mock_undo_rm):
+        """Тест отмены команды rm"""
+        mock_undo_rm.return_value = True
+        record = {"command": "rm", "undo_data": {"path": "/path", "trash_path": "/trash"}}
+
+        result = undo_command(record)
+
+        self.assertTrue(result)
+        mock_undo_rm.assert_called_once_with({"path": "/path", "trash_path": "/trash"})
+
+    def test_undo_command_unknown(self):
+        """Тест отмены неизвестной команды"""
+        record = {"command": "unknown", "undo_data": {}}
+
+        result = undo_command(record)
+
+        self.assertFalse(result)
 
 
-class TestCatIntegration(unittest.TestCase):
-    """Интеграционные тесты для команды cat"""
+class TestUndoFunctionsWithMocks(unittest.TestCase):
+    """Тесты для функций отмены с использованием моков"""
 
-    @patch('src.sub_functions.cat_dependences.print')
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_args_parse_then_realisation(self, mock_path, mock_print):
-        """Тест последовательности: cat_args_parse затем cat_realisation"""
-        # Настраиваем мок Path для cat_args_parse
-        mock_file_path = MagicMock()
-        mock_file_path.exists.return_value = True
-        mock_file_path.is_dir.return_value = False
-        mock_file_path.is_symlink.return_value = False
-        mock_path.return_value = mock_file_path
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_undo_cp_file_to_file(self, mock_path):
+        """Тест отмены копирования файла в файл"""
+        # Настраиваем моки
+        mock_dst_path = MagicMock()
+        mock_dst_path.exists.return_value = True
+        mock_dst_path.is_dir.return_value = False
 
-        # Парсим аргументы
-        result_path = cat_args_parse(['/test/file.txt'])
+        mock_path.return_value = mock_dst_path
 
-        # Проверяем что вернулся правильный путь
-        self.assertEqual(result_path, mock_file_path)
+        undo_data = {"src": "/src", "dst": "/dst"}
+        result = undo_cp(undo_data)
 
-        # Мокаем открытие файла для cat_realisation
-        test_content = "Test file content"
-        with patch('builtins.open', mock_open(read_data=test_content)):
-            # Выполняем cat_realisation
-            cat_realisation('/test/file.txt')
+        self.assertTrue(result)
+        mock_dst_path.unlink.assert_called_once()
 
-            # Проверяем вызовы
-            mock_print.assert_called_once_with(test_content)
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_undo_cp_file_to_dir(self, mock_path):
+        """Тест отмены копирования файла в директорию"""
+        # Настраиваем моки
+        mock_dst_path = MagicMock()
+        mock_dst_path.exists.return_value = True
+        mock_dst_path.is_dir.return_value = True
+
+        mock_copied_file = MagicMock()
+        mock_copied_file.exists.return_value = True
+
+        mock_dst_path.__truediv__.return_value = mock_copied_file
+
+        mock_path.return_value = mock_dst_path
+
+        undo_data = {"src": "/src/file.txt", "dst": "/dst_dir"}
+        result = undo_cp(undo_data)
+
+        self.assertTrue(result)
+        mock_copied_file.unlink.assert_called_once()
+
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_undo_cp_nonexistent_destination(self, mock_path):
+        """Тест отмены копирования когда файл назначения не существует"""
+        mock_dst_path = MagicMock()
+        mock_dst_path.exists.return_value = False
+        mock_path.return_value = mock_dst_path
+
+        undo_data = {"src": "/src", "dst": "/nonexistent"}
+        result = undo_cp(undo_data)
+
+        self.assertFalse(result)
+
+    @patch('src.sub_functions.undo_dependences.shutil.move')
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_undo_mv(self, mock_path, mock_move):
+        """Тест отмены перемещения файла"""
+        # Настраиваем моки с правильными строковыми представлениями
+        mock_dst_path = MagicMock()
+        mock_dst_path.exists.return_value = True
+        mock_dst_path.__str__ = MagicMock(return_value="/dst")
+
+        mock_src_path = MagicMock()
+        mock_src_path.__str__ = MagicMock(return_value="/src")
+
+        mock_path.side_effect = [mock_dst_path, mock_src_path]
+
+        undo_data = {"src": "/src", "dst": "/dst"}
+        result = undo_mv(undo_data)
+
+        self.assertTrue(result)
+        mock_move.assert_called_once_with("/dst", "/src")
+
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_undo_mv_nonexistent_destination(self, mock_path):
+        """Тест отмены перемещения когда файл назначения не существует"""
+        mock_dst_path = MagicMock()
+        mock_dst_path.exists.return_value = False
+        mock_path.return_value = mock_dst_path
+
+        undo_data = {"src": "/src", "dst": "/nonexistent"}
+        result = undo_mv(undo_data)
+
+        self.assertFalse(result)
+
+    @patch('src.sub_functions.undo_dependences.shutil.move')
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_undo_rm(self, mock_path, mock_move):
+        """Тест отмены удаления файла"""
+        # Настраиваем моки с правильными строковыми представлениями
+        mock_trash_path = MagicMock()
+        mock_trash_path.exists.return_value = True
+        mock_trash_path.__str__ = MagicMock(return_value="/trash")
+
+        mock_original_path = MagicMock()
+        mock_original_path.parent.mkdir.return_value = None
+        mock_original_path.__str__ = MagicMock(return_value="/original")
+
+        mock_path.side_effect = [mock_trash_path, mock_original_path]
+
+        undo_data = {
+            "path": "/original",
+            "trash_path": "/trash"
+        }
+        result = undo_rm(undo_data)
+
+        self.assertTrue(result)
+        mock_move.assert_called_once_with("/trash", "/original")
+
+    @patch('src.sub_functions.undo_dependences.shutil.move')
+    @patch('src.sub_functions.undo_dependences.Path')
+    def test_undo_rm_nonexistent_trash_file(self, mock_path, mock_move):
+        """Тест отмены удаления когда файл в корзине не существует"""
+        # Настраиваем моки
+        mock_trash_path = MagicMock()
+        mock_trash_path.exists.return_value = False
+
+        mock_original_path = MagicMock()
+        mock_original_path.parent.mkdir.return_value = None
+
+        # Настраиваем side_effect для правильного распределения моков
+        def path_side_effect(path):
+            if path == "/nonexistent/trash":
+                return mock_trash_path
+            elif path == "/path":
+                return mock_original_path
+            else:
+                return MagicMock()
+
+        mock_path.side_effect = path_side_effect
+
+        # Мокаем shutil.move чтобы выбросить исключение
+        mock_move.side_effect = FileNotFoundError("File not found")
+
+        undo_data = {
+            "path": "/path",
+            "trash_path": "/nonexistent/trash"
+        }
+
+        # Ожидаем, что функция выбросит исключение
+        with self.assertRaises(FileNotFoundError):
+            undo_rm(undo_data)
 
 
 if __name__ == '__main__':

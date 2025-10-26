@@ -4,6 +4,8 @@ from pathlib import Path
 from datetime import datetime
 from src.sub_functions.history_dependences import add_to_history, save_history as save_hist, read_history as read_hist
 
+# Здесь собраны функции, необходимые основным функциям - undo, чтобы не загрязнять и так грязный main
+
 # Константы
 HISTORY_FILE = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash"
 TRASH_DIR = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash"
@@ -157,6 +159,12 @@ def undo_rm(undo_data: dict) -> bool:
     try:
         original_path = undo_data.get("path")
         trash_path = undo_data.get("trash_path")
+        # Проверки на None и тип
+        if not original_path or not trash_path:
+            return False
+
+        if not isinstance(original_path, str) or not isinstance(trash_path, str):
+            return False
 
         trash_file = Path(trash_path)
         original_file = Path(original_path)
@@ -234,6 +242,16 @@ def rm_with_history(path: str) -> None:
             error_msg = f"Файл или директория не существует: {path}"
             raise FileNotFoundError(error_msg)
 
+        # Запрос подтверждения удаления
+        confirmation = input(
+            f"Вы уверены, что хотите удалить {path}?\n"
+            f"(y - для подтверждения, любой другой ввод для прерывания удаления): "
+        )
+
+        if confirmation.lower() != 'y':
+            print("Удаление отменено.")
+            return
+
         # Получаем абсолютные пути
         absolute_path = path_obj.absolute()
 
@@ -255,8 +273,9 @@ def rm_with_history(path: str) -> None:
             "trash_path": str(trash_path)
         }
 
-        from src.sub_functions.history_dependences import add_to_history
         add_to_history("rm", [path], undo_data)
+
+        print(f"Файл {path} успешно удален (перемещен в корзину).")
 
     except Exception as e:
         raise e

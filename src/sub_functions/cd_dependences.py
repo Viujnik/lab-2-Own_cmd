@@ -2,15 +2,17 @@ import logging
 import os
 from pathlib import Path
 
+# Здесь собраны функции, необходимые основной функции - cd, чтобы не загрязнять и так грязный main
+
 
 def cd_args_parse(args: list[str]) -> Path:
-    """Проверяет аргумент path функции cd. Возвращает этот путь класса Path или None при ошибке."""
+    """Проверяет аргумент path функции cd. Возвращает этот путь класса Path или ошибку."""
     if not args:  # Проверяем, что args не пустой
         error = "Для команды cd ожидается аргумент - path"
         raise Exception(error)
 
     path_str = args[0]
-    if not path_str:  # Проверяем, что путь не пустая строка
+    if not path_str:  # Проверяем, что путь - не пустая строка
         error = "Путь не может быть пустой строкой"
         raise Exception(error)
 
@@ -24,7 +26,7 @@ def cd_args_parse(args: list[str]) -> Path:
         error_msg = f"Директория {path} не существует"
         raise Exception(error_msg)
 
-    # Проверяем, что это директория (не файл)
+    # Проверяем, что это директория
     if not path.is_dir():
         error_msg = f"{path} не является директорией"
         raise Exception(error_msg)

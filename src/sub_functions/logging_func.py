@@ -2,6 +2,8 @@ import logging
 import sys
 from typing import Any
 
+# Здесь собраны функции, необходимые функции логирования, чтобы не загрязнять и так грязный main
+
 
 # Конфигурация логирования
 def setup_logging() -> None:

@@ -2,6 +2,9 @@ import re
 from pathlib import Path
 
 
+# Здесь собраны функции, необходимые основной функции - grep, чтобы не загрязнять и так грязный main
+
+
 def grep_args_parse(args: list[str]) -> dict[str, str]:
     if len(args) < 2:
         raise SyntaxError("Используйте верный синтаксис: grep [OPTIONS] PATTERN PATH")

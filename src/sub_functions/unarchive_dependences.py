@@ -1,10 +1,9 @@
-# Здесь собраны функции, необходимые основным функциям - unzip\untar, чтобы не загрязнять и так грязный main
-import logging
 import shutil
 import zipfile
 import tarfile
 from pathlib import Path
 
+# Здесь собраны функции, необходимые функции разархивирования, чтобы не загрязнять и так грязный main
 
 def unarchive_args_parse(args: list[str]) -> list[str]:
     if len(args) != 2:
