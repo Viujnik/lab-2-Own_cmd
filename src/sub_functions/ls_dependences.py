@@ -117,7 +117,8 @@ def ls_args_parse(args: list[str]) -> dict[str, object]:
         if arg.startswith("-"):  # с "-" начинаются флаги, у нас только l :(
             if 'l' in args[i]:
                 args_value['long'] = True
-        else:  # Остается только path
-            args_value["path"] = arg
+        else:
+            if arg.startswith("'") and arg.endswith("'"): # Остается только path
+                args_value["path"] = arg[1:-1]
         i += 1
     return args_value

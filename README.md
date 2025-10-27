@@ -3,10 +3,10 @@
 ### Установка uv
 Пропишите в терминале для корня проекта следующие команды:
 ```shell
-  uv venv
-  uv sync
-  .venv\Script\activate
-  python src/main.py
+ $ uv venv
+ $ uv sync
+ $ source .venv\bin\activate
+ $ python src/main.py
 ```
 Для MacOS может понадобиться запустить программу python3*
 

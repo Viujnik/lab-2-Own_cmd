@@ -7,8 +7,8 @@ from src.sub_functions.history_dependences import add_to_history, save_history a
 # Здесь собраны функции, необходимые основным функциям - undo, чтобы не загрязнять и так грязный main
 
 # Константы
-HISTORY_FILE = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash"
-TRASH_DIR = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/sub_functions/.trash"
+HISTORY_FILE = ".trash"
+TRASH_DIR = ".trash"
 
 
 def init_trash() -> None:
