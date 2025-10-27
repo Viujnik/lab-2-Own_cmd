@@ -6,14 +6,17 @@ from pathlib import Path
 def cat_args_parse(args: list[str]) -> Path:
     """Проверяет аргумент path функции cat. Возвращает этот путь класса Path или ошибку."""
     if args and args[0]:
-        arg = Path(args[0])
-        if not arg.exists():
-            raise FileNotFoundError(f"Файл {arg} не существует")
-        elif arg.is_dir() or arg.is_symlink():
+        arg = args[0]
+        if arg[0].startswith("'") and arg[0].endswith("'"):
+            arg = arg[1:-1]
+        arg_path = Path(arg)
+        if not arg_path.exists():
+            raise FileNotFoundError(f"Файл {arg_path} не существует")
+        elif arg_path.is_dir() or arg_path.is_symlink():
             error = "Для команды cat нужно передать файл или путь к файлу"
             raise Exception(error)
         else:
-            return arg
+            return arg_path
     else:
         error = "Для команды cat ожидается 2-ой аргумент - файл или путь к файлу"
         raise Exception(error)

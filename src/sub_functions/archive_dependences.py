@@ -4,7 +4,7 @@ from pathlib import Path
 # Здесь собраны функции, необходимые функции архивирования, чтобы не загрязнять и так грязный main
 
 
-def archive_args_parse(args: list) -> list:
+def archive_args_parse(args: list[str]) -> list:
     """
     Парсит аргументы для команд архивации.
     """
@@ -12,14 +12,23 @@ def archive_args_parse(args: list) -> list:
         raise ValueError("Неверное количество аргументов. Используйте: archive <zip|tar> <директория> <имя_архива>")
 
     archive_type = args[0].lower()
-    source_dir = Path(args[1])
+    source_dir = args[1]
     archive_name = args[2]
 
-    if not source_dir.exists():
-        raise FileNotFoundError(f"Директория {source_dir} не найдена")
+    if source_dir.startswith("'") and source_dir.endswith("'"):
+        source_dir = source_dir[1:-1]
 
-    if not source_dir.is_dir():
-        raise ValueError(f"{source_dir} не является директорией")
+    if archive_name.startswith("'") and archive_name.endswith("'"):
+        archive_name = archive_name[1:-1]
+
+    archive_name = archive_name
+    source_dir_path = Path(source_dir)
+
+    if not source_dir_path.exists():
+        raise FileNotFoundError(f"Директория {source_dir_path} не найдена")
+
+    if not source_dir_path.is_dir():
+        raise ValueError(f"{source_dir_path} не является директорией")
 
     # Проверяем расширения архивов
     if archive_type == 'zip' and not archive_name.endswith('.zip'):
@@ -28,7 +37,7 @@ def archive_args_parse(args: list) -> list:
     if archive_type == 'tar' and not (archive_name.endswith('.tar.gz') or archive_name.endswith('.tar')):
         raise ValueError("Для tar архива имя должно заканчиваться на .tar или .tar.gz")
 
-    return [archive_type, source_dir, archive_name]
+    return [archive_type, source_dir_path, archive_name]
 
 
 def archive_realisation(args: list) -> None:

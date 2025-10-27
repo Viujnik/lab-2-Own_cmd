@@ -11,6 +11,10 @@ def mv_args_parse(args: list[str]) -> list[str]:
         raise Exception(error)
     else:
         path_from, path_to = args
+        if path_from.startswith("'") and path_from.endswith("'"):
+            path_from = path_from[1:-1]
+        if path_to.startswith("'") and path_to.endswith("'"):
+            path_to = path_to[1:-1]
         if not os.path.isdir(path_to):
             error = f"Ошибка: {path_to} не является директорией, введите директория куда переместить файл."
             raise Exception(error)

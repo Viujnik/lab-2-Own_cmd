@@ -16,7 +16,9 @@ def rm_args_parse(args: list[str]) -> dict[str, object]:
             if cur_arg == "-r":
                 parsed_args["r_flag"] = True
         else:
-            parsed_args["path"] = os.path.normpath(args[i])
+            if cur_arg.startswith("'") and cur_arg.endswith("'"):
+                cur_arg = cur_arg[1:-1]
+            parsed_args["path"] = os.path.normpath(cur_arg)
         i += 1
     if not parsed_args["path"]:
         error_msg = "Пустой аргумент пути/файла для команды mv."

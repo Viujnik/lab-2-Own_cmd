@@ -19,6 +19,8 @@ def grep_args_parse(args: list[str]) -> dict[str, str]:
         elif not args_value["pattern"]:
             args_value["pattern"] = arg
         elif not args_value["path"]:
+            if arg.startswith("'") and arg.endswith("'"):
+                arg = arg[1:-1]
             args_value["path"] = arg
         i += 1
 

@@ -64,8 +64,7 @@ def input_shell() -> None:
                 # Используем версию с историей для поддержки undo
                 rm_with_history(str(rm_args['path']))
             elif command == "zip":
-                zip_args = archive_args_parse(args)
-                archive_realisation(zip_args)
+                archive_realisation(args)
             elif command == "tar":
                 tar_args = archive_args_parse(args)
                 archive_realisation(tar_args)

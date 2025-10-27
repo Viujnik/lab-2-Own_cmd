@@ -12,6 +12,9 @@ def unarchive_args_parse(args: list[str]) -> list[str]:
 
     cmd, arch_name = args
 
+    if arch_name.startswith("'") and arch_name.endswith("'"):
+        arch_name = arch_name[1:-1]
+
     # Проверяем, что архив существует (это файл, а не директория)
     if not Path(arch_name).is_file():
         error_msg = f"Архив {arch_name} не существует."

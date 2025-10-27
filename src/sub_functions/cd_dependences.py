@@ -19,6 +19,9 @@ def cd_args_parse(args: list[str]) -> Path:
     if path_str == "~":
         return Path(os.path.expanduser("~"))
 
+    if path_str.startswith("'") and path_str.endswith("'"):  # Остается только path
+        path_str = path_str[1:-1]
+
     path = Path(path_str)
 
     # Проверяем существование пути
@@ -30,6 +33,7 @@ def cd_args_parse(args: list[str]) -> Path:
     if not path.is_dir():
         error_msg = f"{path} не является директорией"
         raise Exception(error_msg)
+
 
     return path
 
