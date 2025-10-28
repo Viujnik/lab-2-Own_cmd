@@ -1,0 +1,3 @@
+[2025-10-27 14:58:09] - INFO - Запуск приложения
+[2025-10-27 14:58:14] - INFO - Выполнена команда: cat /Users/kostamak/PycharmProjects/lab-2-cmd/test/tests.py
+[2025-10-27 14:58:32] - INFO - Выполнена команда: zip /Users/kostamak/PycharmProjects/lab-2-cmd/test archive.zip
