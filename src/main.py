@@ -34,7 +34,7 @@ def input_shell() -> None:
             user_input = input(f"{os.getcwd()}> ").strip()
             if not user_input:
                 continue
-            args = shlex.split(user_input, posix=False)
+            args = shlex.split(user_input)
             command = args[0]
             logging_command(command, args[1:])
 

@@ -1,3 +1,17 @@
 [2025-10-27 14:58:09] - INFO - Запуск приложения
 [2025-10-27 14:58:14] - INFO - Выполнена команда: cat /Users/kostamak/PycharmProjects/lab-2-cmd/test/tests.py
 [2025-10-27 14:58:32] - INFO - Выполнена команда: zip /Users/kostamak/PycharmProjects/lab-2-cmd/test archive.zip
+[2025-10-28 23:16:22] - INFO - Запуск приложения
+[2025-10-28 23:16:41] - INFO - Выполнена команда: grep "import" main.py
+[2025-10-28 23:17:38] - INFO - Выполнена команда: grep import main.py
+[2025-10-28 23:18:09] - INFO - Выполнена команда: grep elif command main.py
+[2025-10-28 23:18:09] - ERROR - Ошибка: Путь 'command' не существует
+[2025-10-28 23:18:23] - INFO - Выполнена команда: grep "elif command" main.py
+[2025-10-28 23:18:35] - INFO - Выполнена команда: grep 'import' main.py
+[2025-10-28 23:18:55] - INFO - Выполнена команда: grep 'elif command' main.py
+[2025-10-28 23:19:12] - INFO - Запуск приложения
+[2025-10-28 23:19:36] - INFO - Выполнена команда: grep 'elif command' main.py
+[2025-10-28 23:20:15] - INFO - Запуск приложения
+[2025-10-28 23:20:17] - INFO - Выполнена команда: grep 'elif command' main.py
+[2025-10-28 23:20:41] - INFO - Запуск приложения
+[2025-10-28 23:20:42] - INFO - Выполнена команда: grep elif command main.py

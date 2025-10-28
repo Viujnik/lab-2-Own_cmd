@@ -1,2 +1,11 @@
 2025-10-27T14:58:14.303440|cat|/Users/kostamak/PycharmProjects/lab-2-cmd/test/tests.py|
 2025-10-27T14:58:32.909713|zip|/Users/kostamak/PycharmProjects/lab-2-cmd/test archive.zip|
+2025-10-28T23:16:41.176777|grep|"import" main.py|
+2025-10-28T23:17:38.444718|grep|import main.py|
+2025-10-28T23:18:09.521052|grep|elif command main.py|
+2025-10-28T23:18:23.378722|grep|"elif command" main.py|
+2025-10-28T23:18:35.109209|grep|'import' main.py|
+2025-10-28T23:18:55.596002|grep|'elif command' main.py|
+2025-10-28T23:19:36.267933|grep|'elif command' main.py|
+2025-10-28T23:20:17.966958|grep|'elif command' main.py|
+2025-10-28T23:20:42.286217|grep|elif command main.py|
