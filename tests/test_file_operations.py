@@ -22,8 +22,6 @@ sys.path.insert(0, project_root)
 
 class TestFileOperationsWithMocks(unittest.TestCase):
     """Тесты для файловых операций с использованием моков"""
-
-    # ТЕСТЫ ДЛЯ CP ARGS PARSE
     @patch('src.sub_functions.cp_dependences.Path')
     def test_cp_args_parse_valid(self, mock_path):
         """Тест парсинга аргументов cp с валидными путями"""
@@ -71,7 +69,6 @@ class TestFileOperationsWithMocks(unittest.TestCase):
             cp_args_parse(['source.txt'])
         self.assertIn("Введите 2 аргумента", str(context.exception))
 
-    # ТЕСТЫ ДЛЯ MV ARGS PARSE
     @patch('os.path.isdir')
     @patch('os.path.exists')
     def test_mv_args_parse_valid(self, mock_exists, mock_isdir):
@@ -110,7 +107,6 @@ class TestFileOperationsWithMocks(unittest.TestCase):
             mv_args_parse(['source.txt'])
         self.assertIn("2 аргумента", str(context.exception))
 
-    # ТЕСТЫ ДЛЯ FILESYSTEM_CHECK
     @patch('os.stat')
     def test_filesystem_check_same_device(self, mock_stat):
         """Тест проверки файловой системы - файлы на одном устройстве"""
@@ -147,7 +143,6 @@ class TestFileOperationsWithMocks(unittest.TestCase):
         result = filesystem_check('/path1', '/path2')
         self.assertFalse(result)
 
-    # ТЕСТЫ ДЛЯ RM ARGS PARSE
     @patch('src.sub_functions.rm_dependences.os.path.normpath')
     def test_rm_args_parse_valid_without_flag(self, mock_normpath):
         """Тест парсинга аргументов rm без флага -r"""
@@ -187,7 +182,6 @@ class TestFileOperationsWithMocks(unittest.TestCase):
             rm_args_parse(['-r'])
         self.assertIn("Пустой аргумент пути/файла", str(context.exception))
 
-    # ТЕСТЫ ДЛЯ CP С ИСТОРИЕЙ
     @patch('src.sub_functions.undo_dependences.add_to_history')
     @patch('src.sub_functions.undo_dependences.shutil.copy2')
     @patch('src.sub_functions.undo_dependences.Path')
@@ -258,7 +252,6 @@ class TestFileOperationsWithMocks(unittest.TestCase):
         with self.assertRaises(PermissionError):
             cp_with_history("source.txt", "dest_dir")
 
-    # ТЕСТЫ ДЛЯ RM С ИСТОРИЕЙ (С ПОДТВЕРЖДЕНИЕМ)
     @patch('src.sub_functions.undo_dependences.add_to_history')
     @patch('src.sub_functions.undo_dependences.shutil.move')
     @patch('src.sub_functions.undo_dependences.Path')
@@ -313,7 +306,6 @@ class TestFileOperationsWithMocks(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             rm_with_history("/nonexistent/file")
 
-    # ТЕСТЫ ДЛЯ MV С ИСТОРИЕЙ
     @patch('src.sub_functions.undo_dependences.add_to_history')
     @patch('src.sub_functions.undo_dependences.shutil.move')
     @patch('src.sub_functions.undo_dependences.Path')
@@ -334,7 +326,6 @@ class TestFileOperationsWithMocks(unittest.TestCase):
         mock_move.assert_called_once_with("source.txt", "dest.txt")
         mock_add_history.assert_called_once()
 
-    # ТЕСТЫ ДЛЯ UNDO
     def test_undo_args_parse_default(self):
         """Тест парсинга аргументов undo по умолчанию"""
         result = undo_args_parse([])
@@ -388,7 +379,6 @@ class TestFileOperationsWithMocks(unittest.TestCase):
             undo_realisation({"steps": 1})
         self.assertIn("Нет команд для отмены", str(context.exception))
 
-    # ТЕСТЫ ДЛЯ UNDO_COMMAND
     @patch('src.sub_functions.undo_dependences.undo_cp')
     def test_undo_command_cp(self, mock_undo_cp):
         """Тест отмены команды cp"""

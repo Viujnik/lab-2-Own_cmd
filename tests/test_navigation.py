@@ -182,7 +182,7 @@ class TestLsCommands(unittest.TestCase):
     @patch('src.sub_functions.ls_dependences.os.readlink')
     @patch('src.sub_functions.ls_dependences.stat')
     def test_detailed_list_symlink(self, mock_stat, mock_readlink, mock_datetime, mock_print):
-        """Тест детального вывода для симлинка"""
+        """Тест детального вывода для сиволической ссылки"""
         mock_datetime.fromtimestamp.return_value.strftime.return_value = '2024-01-15 10:00:00'
         mock_readlink.return_value = '/target/path'
         mock_stat.S_ISLNK.return_value = True
@@ -204,7 +204,7 @@ class TestLsCommands(unittest.TestCase):
     @patch('src.sub_functions.ls_dependences.print')
     @patch('src.sub_functions.ls_dependences.stat')
     def test_detailed_list_broken_symlink(self, mock_stat, mock_print):
-        """Тест детального вывода для битого симлинка"""
+        """Тест детального вывода для битой символической ссылки"""
         mock_file = MagicMock(spec=Path)
         mock_file.name = 'broken_symlink'
         mock_file.stat.return_value.st_mode = 0o120755
@@ -293,7 +293,7 @@ class TestLsCommands(unittest.TestCase):
     @patch('src.sub_functions.ls_dependences.Path')
     @patch('src.sub_functions.ls_dependences.stat')
     def test_ls_realisation_symlink_file_success(self, mock_stat, mock_path, mock_print):
-        """Тест ls для симлинка"""
+        """Тест ls для символической ссылки"""
         mock_path_obj = MagicMock()
         mock_path_obj.exists.return_value = True
         mock_path_obj.is_file.return_value = False
@@ -409,7 +409,7 @@ class TestLsCommands(unittest.TestCase):
 
     @staticmethod
     def _create_mock_file(name, is_dir=False, is_symlink=False):
-        """Создает мок файла с заданными характеристиками"""
+        """Создаем мок файла с заданными характеристиками"""
         mock_file = MagicMock(spec=Path)
         mock_file.name = name
 
