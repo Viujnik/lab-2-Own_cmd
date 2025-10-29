@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch, MagicMock
@@ -23,7 +24,6 @@ class TestArchiveCommands(unittest.TestCase):
     def tearDown(self):
         """Удаляет временную директорию после каждого теста."""
         os.chdir(self.original_cwd)
-        import shutil
         shutil.rmtree(self.test_dir, ignore_errors=True)
 
     @staticmethod
@@ -145,7 +145,6 @@ class TestUnarchiveCommands(unittest.TestCase):
     def tearDown(self):
         """Удаляет временную директорию после каждого теста."""
         os.chdir(self.original_cwd)
-        import shutil
         shutil.rmtree(self.test_dir, ignore_errors=True)
 
     def _create_test_archive(self, archive_name, content_files=2):
