@@ -38,7 +38,7 @@ def input_shell() -> None:
             command = args[0]
             logging_command(command, args[1:])
 
-            # Добавляем команду в историю (кроме самих history и undo)
+            # Добавляем команду в историю (кроме самих history и undo и команд, которые записываются в историю при реализации)
             if command not in ["history", "undo", "cp", "mv", "rm"]:
                 add_to_history(command, args[1:], None)
             # Смотрим какая команда введена

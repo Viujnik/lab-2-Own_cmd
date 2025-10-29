@@ -323,7 +323,7 @@ class TestUnarchiveCommands(unittest.TestCase):
     @patch('src.sub_functions.unarchive_dependences.shutil.unpack_archive')
     @patch('src.sub_functions.unarchive_dependences.zipfile.ZipFile')
     def test_unarchive_realisation_exception_propagation(self, mock_zipfile, mock_unpack):
-        """Тест пробрасывания исключений из unarchive_realisation."""
+        """Тест исключений из unarchive_realisation."""
         mock_zip_instance = MagicMock()
         mock_zipfile.return_value.__enter__.return_value = mock_zip_instance
         mock_zip_instance.testzip.return_value = None
