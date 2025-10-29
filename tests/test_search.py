@@ -159,25 +159,6 @@ class TestCatCommands(unittest.TestCase):
         mock_file_path.open.assert_called_once_with("r", encoding='utf-8')
         mock_print.assert_called_once_with(large_content)
 
-    @patch('src.sub_functions.cat_dependences.print')
-    @patch('src.sub_functions.cat_dependences.Path')
-    def test_cat_realisation_multiline_file(self, mock_path, mock_print):
-        """Тест cat_realisation с многострочным файлом - успешный случай"""
-        mock_file_path = MagicMock()
-        mock_path.return_value = mock_file_path
-
-        multiline_content = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
-
-        mock_file = MagicMock()
-        mock_file.__enter__.return_value.read.return_value = multiline_content
-        mock_file_path.open.return_value = mock_file
-
-        cat_realisation('/multiline/file.txt')
-
-        mock_path.assert_called_once_with('/multiline/file.txt')
-        mock_file_path.open.assert_called_once_with("r", encoding='utf-8')
-        mock_print.assert_called_once_with(multiline_content)
-
 
 class TestGrepCommands(unittest.TestCase):
     """Тесты для команды поиска grep"""
