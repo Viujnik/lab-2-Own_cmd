@@ -42,57 +42,58 @@ def input_shell() -> None:
             if command not in ["history", "undo", "cp", "mv", "rm"]:
                 add_to_history(command, args[1:], None)
             # Смотрим какая команда введена
-            if command == "ls":
-                args_value = ls_args_parse(args[1:])
-                ls_realisation(path=str(args_value["path"]), long=bool(args_value["long"]))
-            elif command == "cd":
-                arg_value = cd_args_parse(args[1:])
-                cd_realisation(str(arg_value))
-            elif command == "cat":
-                arg_value = cat_args_parse(args[1:])
-                cat_realisation(str(arg_value))
-            elif command == "cp":
-                cp_args = cp_args_parse(args[1:])
-                # Используем версию с историей для поддержки undo
-                cp_with_history(cp_args[0], str(cp_args[1]))
-            elif command == "mv":
-                mv_args = mv_args_parse(args[1:])
-                path_from, path_to = mv_args
-                mv_with_history(path_from, path_to)
-            elif command == "rm":
-                rm_args = rm_args_parse(args[1:])
-                # Используем версию с историей для поддержки undo
-                rm_with_history(str(rm_args['path']))
-            elif command == "zip":
-                archive_realisation(args)
-            elif command == "tar":
-                tar_args = archive_args_parse(args)
-                archive_realisation(tar_args)
-            elif command == "unzip":
-                unzip_args = unarchive_args_parse(args)
-                unarchive_realisation(unzip_args)
-            elif command == "untar":
-                untar_args = unarchive_args_parse(args)
-                unarchive_realisation(untar_args)
-            elif command == "grep":
-                grep_args = grep_args_parse(args[1:])
-                grep_realisation(grep_args)
-            elif command == "history":
-                history_args = history_args_parse(args[1:])
-                history_realisation(history_args)
-            elif command == "undo":
-                undo_args = undo_args_parse(args[1:])
-                undo_realisation(undo_args)
-            elif command == "clear":
-                clear_realisation()
-            elif command == "help":
-                help_realisation()
-            elif command == "exit":
-                break
-            else:
-                error_msg = f"Неизвестная команда: {command}"
-                logging.error(error_msg)
-                raise Exception(error_msg)
+            match command:
+                case "ls":
+                    args_value = ls_args_parse(args[1:])
+                    ls_realisation(path=str(args_value["path"]), long=bool(args_value["long"]))
+                case "cd":
+                    arg_value = cd_args_parse(args[1:])
+                    cd_realisation(str(arg_value))
+                case "cat":
+                    arg_value = cat_args_parse(args[1:])
+                    cat_realisation(str(arg_value))
+                case "cp":
+                    cp_args = cp_args_parse(args[1:])
+                    # Используем версию с историей для поддержки undo
+                    cp_with_history(cp_args[0], str(cp_args[1]))
+                case "mv":
+                    mv_args = mv_args_parse(args[1:])
+                    path_from, path_to = mv_args
+                    mv_with_history(path_from, path_to)
+                case "rm":
+                    rm_args = rm_args_parse(args[1:])
+                    # Используем версию с историей для поддержки undo
+                    rm_with_history(str(rm_args['path']))
+                case "zip":
+                    archive_realisation(args)
+                case "tar":
+                    tar_args = archive_args_parse(args)
+                    archive_realisation(tar_args)
+                case "unzip":
+                    unzip_args = unarchive_args_parse(args)
+                    unarchive_realisation(unzip_args)
+                case "untar":
+                    untar_args = unarchive_args_parse(args)
+                    unarchive_realisation(untar_args)
+                case "grep":
+                    grep_args = grep_args_parse(args[1:])
+                    grep_realisation(grep_args)
+                case "history":
+                    history_args = history_args_parse(args[1:])
+                    history_realisation(history_args)
+                case "undo":
+                    undo_args = undo_args_parse(args[1:])
+                    undo_realisation(undo_args)
+                case "clear":
+                    clear_realisation()
+                case "help":
+                    help_realisation()
+                case "exit":
+                    break
+                case _:
+                    error_msg = f"Неизвестная команда: {command}"
+                    logging.error(error_msg)
+                    raise Exception(error_msg)
         except Exception as e:
             error_msg = f"Ошибка: {e}"
             logging.error(error_msg)
