@@ -29,3 +29,44 @@
 [2025-10-30 14:27:32] - ERROR - Неизвестная команда: fsfs
 [2025-10-30 14:27:32] - ERROR - Ошибка: Неизвестная команда: fsfs
 [2025-10-30 14:27:36] - INFO - Выполнена команда: ls -l
+[2025-10-31 16:22:15] - INFO - Запуск приложения
+[2025-10-31 16:22:31] - INFO - Выполнена команда: cp main.py /Users/kostamak/PycharmProjects/lab-2-cmd
+[2025-10-31 16:24:16] - INFO - Выполнена команда: undo
+[2025-10-31 16:25:49] - INFO - Запуск приложения
+[2025-10-31 16:26:19] - INFO - Запуск приложения
+[2025-10-31 16:26:28] - INFO - Выполнена команда: mv /Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd
+[2025-10-31 16:26:42] - INFO - Выполнена команда: undo
+[2025-10-31 16:26:42] - ERROR - Ошибка при отмене команды mv: Cannot move a directory '/Users/kostamak/PycharmProjects/lab-2-cmd' into itself '/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt'.
+[2025-10-31 16:35:40] - INFO - Запуск приложения
+[2025-10-31 16:36:03] - INFO - Выполнена команда: mv /Users/kostamak/PycharmProjects/lab-2-cmd/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd/src
+[2025-10-31 16:36:44] - INFO - Выполнена команда: undo
+[2025-10-31 16:36:44] - INFO - undo_mv: успешно отменено перемещение /Users/kostamak/PycharmProjects/lab-2-cmd/src -> /Users/kostamak/PycharmProjects/lab-2-cmd/test.txt
+[2025-10-31 16:36:44] - ERROR - Ошибка: [Errno 2] No such file or directory: '/Users/kostamak/PycharmProjects/lab-2-cmd/src/.history'
+[2025-10-31 16:43:56] - INFO - Запуск приложения
+[2025-10-31 16:43:58] - INFO - Выполнена команда: ls -l
+[2025-10-31 16:44:06] - INFO - Выполнена команда: history 1
+[2025-10-31 16:48:31] - INFO - Запуск приложения
+[2025-10-31 16:49:07] - INFO - Запуск приложения
+[2025-10-31 16:49:20] - INFO - Выполнена команда: mv /Users/kostamak/PycharmProjects/lab-2-cmd/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd/src
+[2025-10-31 16:49:42] - INFO - Выполнена команда: undi
+[2025-10-31 16:49:42] - ERROR - Неизвестная команда: undi
+[2025-10-31 16:49:42] - ERROR - Ошибка: Неизвестная команда: undi
+[2025-10-31 16:49:44] - INFO - Выполнена команда: undo
+[2025-10-31 16:49:44] - INFO - undo_mv: успешно отменено перемещение /Users/kostamak/PycharmProjects/lab-2-cmd/src -> /Users/kostamak/PycharmProjects/lab-2-cmd/test.txt
+[2025-10-31 16:51:16] - INFO - Запуск приложения
+[2025-10-31 16:51:30] - INFO - Выполнена команда: mv /Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd
+[2025-10-31 16:51:38] - INFO - Выполнена команда: undo
+[2025-10-31 16:51:38] - ERROR - Ошибка при отмене команды mv: Cannot move a directory '/Users/kostamak/PycharmProjects/lab-2-cmd' into itself '/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt'.
+[2025-10-31 16:59:10] - INFO - Запуск приложения
+[2025-10-31 16:59:26] - INFO - Выполнена команда: mv /Users/kostamak/PycharmProjects/lab-2-cmd/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd/src
+[2025-10-31 16:59:34] - INFO - Выполнена команда: undo
+[2025-10-31 17:04:42] - INFO - Запуск приложения
+[2025-10-31 17:04:58] - INFO - Выполнена команда: mv /Users/kostamak/PycharmProjects/lab-2-cmd/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd/src
+[2025-10-31 17:05:05] - INFO - Выполнена команда: undo
+[2025-10-31 17:05:17] - INFO - Выполнена команда: rm /Users/kostamak/PycharmProjects/lab-2-cmd/test.txt
+[2025-10-31 17:05:52] - INFO - Выполнена команда: undo
+[2025-10-31 17:06:10] - INFO - Выполнена команда: cp /Users/kostamak/PycharmProjects/lab-2-cmd/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd/src
+[2025-10-31 17:06:18] - INFO - Выполнена команда: undi
+[2025-10-31 17:06:18] - ERROR - Неизвестная команда: undi
+[2025-10-31 17:06:18] - ERROR - Ошибка: Неизвестная команда: undi
+[2025-10-31 17:06:21] - INFO - Выполнена команда: undo

@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 # Константы
-HISTORY_FILE = "/Users/kostamak/PycharmProjects/lab-2-cmd/src/.history"
+HISTORY_FILE = ".history"
 MAX_HISTORY_SIZE = 100
 
 

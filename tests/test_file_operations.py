@@ -22,6 +22,7 @@ sys.path.insert(0, project_root)
 
 class TestFileOperationsWithMocks(unittest.TestCase):
     """Тесты для файловых операций с использованием моков"""
+
     @patch('src.sub_functions.cp_dependences.Path')
     def test_cp_args_parse_valid(self, mock_path):
         """Тест парсинга аргументов cp с валидными путями"""
@@ -311,19 +312,21 @@ class TestFileOperationsWithMocks(unittest.TestCase):
     @patch('src.sub_functions.undo_dependences.Path')
     def test_mv_with_history_file(self, mock_path, mock_move, mock_add_history):
         """Тест перемещения файла с записью в историю"""
-        # Настраиваем моки
+        # Настраиваем моки со строковым представлением
         mock_src_path = MagicMock()
         mock_src_path.absolute.return_value = Path("/absolute/source.txt")
+        mock_src_path.__str__ = MagicMock(return_value="source.txt")
 
         mock_dst_path = MagicMock()
         mock_dst_path.absolute.return_value = Path("/absolute/dest.txt")
+        mock_dst_path.__str__ = MagicMock(return_value="dest.txt")
 
         mock_path.side_effect = [mock_src_path, mock_dst_path]
 
         mv_with_history("source.txt", "dest.txt")
 
         # Проверяем вызовы
-        mock_move.assert_called_once_with("source.txt", "dest.txt")
+        mock_move.assert_called_once_with("source.txt", "dest.txt")  # Теперь работает!
         mock_add_history.assert_called_once()
 
     def test_undo_args_parse_default(self):
@@ -475,23 +478,44 @@ class TestUndoFunctionsWithMocks(unittest.TestCase):
 
     @patch('src.sub_functions.undo_dependences.shutil.move')
     @patch('src.sub_functions.undo_dependences.Path')
-    def test_undo_mv(self, mock_path, mock_move):
+    @patch('builtins.input')  # Добавляем мок для input
+    def test_undo_mv(self, mock_input, mock_path, mock_move):
         """Тест отмены перемещения файла"""
-        # Настраиваем моки с правильными строковыми представлениями
+        # Настраиваем моки
+        mock_input.return_value = 'y'  # Подтверждение перезаписи
+
         mock_dst_path = MagicMock()
         mock_dst_path.exists.return_value = True
         mock_dst_path.__str__ = MagicMock(return_value="/dst")
 
         mock_src_path = MagicMock()
         mock_src_path.__str__ = MagicMock(return_value="/src")
+        mock_src_path.parent.exists.return_value = True
+        mock_src_path.exists.return_value = True
 
-        mock_path.side_effect = [mock_dst_path, mock_src_path]
+        def path_side_effect(path):
+            if path == "/dst":
+                return mock_dst_path
+            elif path == "/src":
+                return mock_src_path
+            else:
+                return MagicMock()
+
+        mock_path.side_effect = path_side_effect
+
+        # Настраиваем side_effect для shutil.move, чтобы изменить состояние файлов
+        def move_side_effect(src, dst):
+            mock_dst_path.exists.return_value = False
+            mock_src_path.exists.return_value = True
+
+        mock_move.side_effect = move_side_effect
 
         undo_data = {"src": "/src", "dst": "/dst"}
         result = undo_mv(undo_data)
 
         self.assertTrue(result)
         mock_move.assert_called_once_with("/dst", "/src")
+        mock_input.assert_called_once()
 
     @patch('src.sub_functions.undo_dependences.Path')
     def test_undo_mv_nonexistent_destination(self, mock_path):

@@ -7,7 +7,7 @@ from src.sub_functions.history_dependences import add_to_history, save_history a
 # Здесь собраны функции, необходимые основным функциям - undo, чтобы не загрязнять и так грязный main
 
 # Константы
-HISTORY_FILE = ".trash"
+HISTORY_FILE = ".history"
 TRASH_DIR = ".trash"
 
 
@@ -144,14 +144,38 @@ def undo_cp(undo_data: dict) -> bool:
 def undo_mv(undo_data: dict) -> bool:
     """Отменяет команду mv - возвращает файл на исходное место"""
     try:
-        src_path = undo_data.get("src")
-        dst_path = undo_data.get("dst")
-        if dst_path and Path(dst_path).exists() and src_path:
-            shutil.move(dst_path, src_path)
-            return True
-        return False
+        src_path_str = undo_data.get("src", "")
+        dst_path_str = undo_data.get("dst", "")
+
+        if not src_path_str or not dst_path_str:
+            return False
+
+        src_path = Path(src_path_str)
+        dst_path = Path(dst_path_str)
+
+        # Проверяем существование перемещенного файла
+        if not dst_path.exists():
+            return False
+
+        # Проверяем существование исходной директории
+        if not src_path.parent.exists():
+            return False
+
+        # Если исходный файл уже существует, спрашиваем пользователя
+        if src_path.exists():
+            response = input(f"Файл {src_path} уже существует. Перезаписать? (y/n): ")
+            if response.lower() != 'y':
+                return False
+
+        # Перемещаем файл обратно
+        shutil.move(str(dst_path), str(src_path))
+
+        # Проверяем результат
+        return src_path.exists() and not dst_path.exists()
+
     except Exception as e:
-        raise e
+        logging.error(f"Ошибка при отмене mv: {e}")
+        return False
 
 
 def undo_rm(undo_data: dict) -> bool:
@@ -221,13 +245,20 @@ def mv_with_history(src: str, dst: str) -> None:
         src_path = Path(src)
         dst_path = Path(dst)
 
-        shutil.move(src, dst)
+        # Определяем фактический конечный путь
+        if dst_path.is_dir():
+            actual_dst = dst_path / src_path.name
+        else:
+            actual_dst = dst_path
 
-        # Добавляем в историю с данными для отмены
+        shutil.move(str(src_path), str(dst_path))
+
+        # Добавляем в историю с путями
         undo_data = {
             "src": str(src_path.absolute()),
-            "dst": str(dst_path.absolute())
+            "dst": str(actual_dst.absolute())
         }
+
         add_to_history("mv", [src, dst], undo_data)
 
     except Exception as e:

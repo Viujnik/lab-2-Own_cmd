@@ -72,7 +72,7 @@ def unarchive_realisation(args: list[str]) -> None:
                 raise ValueError(error_msg)
 
         # Создаем папку для распаковки
-        extract_path = Path(".") / extract_dir_name
+        extract_path = Path("") / extract_dir_name
         extract_path.mkdir(exist_ok=True)
 
         # Распаковываем архив в созданную папку

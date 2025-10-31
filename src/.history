@@ -27,3 +27,9 @@
 2025-10-29T21:11:06.285195|clear||
 2025-10-30T14:27:32.069127|fsfs||
 2025-10-30T14:27:36.840652|ls|-l|
+2025-10-31T16:26:28.690590|mv|/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd|src=/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt|dst=/Users/kostamak/PycharmProjects/lab-2-cmd
+2025-10-31T16:36:03.739339|mv|/Users/kostamak/PycharmProjects/lab-2-cmd/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd/src|src=/Users/kostamak/PycharmProjects/lab-2-cmd/test.txt|dst=/Users/kostamak/PycharmProjects/lab-2-cmd/src
+2025-10-31T16:43:58.839566|ls|-l|
+2025-10-31T16:49:42.221178|undi||
+2025-10-31T16:51:30.339169|mv|/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt /Users/kostamak/PycharmProjects/lab-2-cmd|src=/Users/kostamak/PycharmProjects/lab-2-cmd/src/test.txt|dst=/Users/kostamak/PycharmProjects/lab-2-cmd
+2025-10-31T17:06:18.317655|undi||
