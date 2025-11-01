@@ -111,7 +111,7 @@ def undo_command(record: dict) -> bool:
 
 
 def undo_cp(undo_data: dict) -> bool:
-    """Отменяет команду cp - удаляет скопированный файл"""
+    """Отменяет команду cp удалением скопированного файла"""
     try:
         src_path = Path(undo_data.get("src", ""))
         dst_path = Path(undo_data.get("dst", ""))
@@ -275,18 +275,16 @@ def rm_with_history(path: str) -> None:
 
         # Запрос подтверждения удаления
         confirmation = input(
-            f"Вы уверены, что хотите удалить {path}?\n"
-            f"(y - для подтверждения, любой другой ввод для прерывания удаления): "
-        )
+            f"Вы уверены, что хотите удалить {path}? (y - для подтверждения, любой другой символ для прерывания удаления): ")
 
         if confirmation.lower() != 'y':
             print("Удаление отменено.")
             return
 
-        # Получаем абсолютные пути
+        # Получаем абсолютный пути
         absolute_path = path_obj.absolute()
 
-        # Убедимся, что корзина существует
+        # Проверка, что корзина существует
         trash_dir = Path(TRASH_DIR).absolute()
         trash_dir.mkdir(exist_ok=True)
 
