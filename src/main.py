@@ -7,7 +7,6 @@ import logging
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 # Теперь импортируем модули
-from src.sub_functions.clear_dependences import clear_realisation
 from src.sub_functions.undo_dependences import (undo_args_parse, undo_realisation, init_trash, cp_with_history,
                                             mv_with_history, rm_with_history)
 from src.sub_functions.history_dependences import history_args_parse, history_realisation, history_mkdir, add_to_history
@@ -84,8 +83,6 @@ def input_shell() -> None:
                 case "undo":
                     undo_args = undo_args_parse(args[1:])
                     undo_realisation(undo_args)
-                case "clear":
-                    clear_realisation()
                 case "help":
                     help_realisation()
                 case "exit":
