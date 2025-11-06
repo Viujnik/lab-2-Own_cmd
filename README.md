@@ -107,7 +107,6 @@
 Тесты распределены по ролям команд:
 ```
 tests:
-    config_tests.py
     test_archives.py
     test_file_operations.py
     test_history.py
