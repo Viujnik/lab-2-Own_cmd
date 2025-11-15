@@ -120,5 +120,8 @@ def ls_args_parse(args: list[str]) -> dict[str, object]:
         else:
             if arg.startswith("'") and arg.endswith("'"): # Остается только path
                 args_value["path"] = arg[1:-1]
+
+            else:
+                args_value["path"] = arg
         i += 1
     return args_value
