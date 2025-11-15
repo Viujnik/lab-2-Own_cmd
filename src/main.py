@@ -44,7 +44,7 @@ def input_shell() -> None:
             match command:
                 case "ls":
                     args_value = ls_args_parse(args[1:])
-                    ls_realisation(path=str(args_value["path"]), long=bool(args_value["long"]))
+                    ls_realisation(path=str(args_value.path), long=bool(args_value.long))
                 case "cd":
                     arg_value = cd_args_parse(args[1:])
                     cd_realisation(str(arg_value))

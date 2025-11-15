@@ -1,3 +1,4 @@
+import argparse
 import logging
 import os
 from os import stat_result
@@ -105,23 +106,9 @@ def ls_realisation(path: str, long: bool = False) -> None:
         raise e
 
 
-def ls_args_parse(args: list[str]) -> dict[str, object]:
-    """Парсит аргументы команды ls и возвращает их наличие/отсутствие."""
-    args_value = {
-        'path': '',
-        'long': False
-    }
-    i = 0
-    while i < len(args):
-        arg = args[i]
-        if arg.startswith("-"):  # с "-" начинаются флаги, у нас только l :(
-            if 'l' in args[i]:
-                args_value['long'] = True
-        else:
-            if arg.startswith("'") and arg.endswith("'"): # Остается только path
-                args_value["path"] = arg[1:-1]
-
-            else:
-                args_value["path"] = arg
-        i += 1
-    return args_value
+def ls_args_parse(args: list[str]):
+    parser = argparse.ArgumentParser(prog="ls", description="Вывод содержимого каталога", exit_on_error=False)
+    parser.add_argument("-l", "--long", action="store_true", help="Детальный вывод содержимого каталога")
+    parser.add_argument("path", nargs='?', default=os.getcwd(), help="Путь к директории или файлу")
+    parsed_args = parser.parse_args(args)
+    return parsed_args

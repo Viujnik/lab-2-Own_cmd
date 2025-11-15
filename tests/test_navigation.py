@@ -20,63 +20,34 @@ class TestCdCommands(unittest.TestCase):
         """Тест парсинга аргументов cd без аргументов"""
         with self.assertRaises(Exception) as context:
             cd_args_parse([])
-        self.assertEqual(str(context.exception), "Для команды cd ожидается аргумент - path")
+        self.assertIn("Ошибка парсинга команды cd", str(context.exception))
 
-    def test_cd_args_parse_empty_string_arg(self):
-        """Тест парсинга аргументов cd с пустой строкой"""
-        with self.assertRaises(Exception) as context:
-            cd_args_parse([''])
-        self.assertEqual(str(context.exception), "Путь не может быть пустой строкой")
-
-    @patch('src.sub_functions.cd_dependences.os.path.expanduser')
-    def test_cd_args_parse_home_directory(self, mock_expanduser):
-        """Тест парсинга аргументов cd с домашним каталогом"""
-        mock_expanduser.return_value = '/home/testuser'
-        result = cd_args_parse(['~'])
+    def test_cd_args_parse_valid_path(self):
+        """Тест парсинга аргументов cd с валидным путем"""
+        result = cd_args_parse(['/valid/path'])
         self.assertIsInstance(result, Path)
-        self.assertEqual(str(result), '/home/testuser')
-        mock_expanduser.assert_called_once_with('~')
+        self.assertEqual(str(result), '/valid/path')
 
-    @patch('src.sub_functions.cd_dependences.Path')
-    def test_cd_args_parse_nonexistent_path(self, mock_path):
-        """Тест парсинга аргументов cd с несуществующим путем"""
-        mock_path_instance = MagicMock()
-        mock_path_instance.exists.return_value = False
-        mock_path_instance.__str__ = lambda x: '/nonexistent/path'
-        mock_path.return_value = mock_path_instance
+    def test_cd_args_parse_home_directory(self):
+        """Тест парсинга аргументов cd с домашним каталогом"""
+        with patch('src.sub_functions.cd_dependences.os.path.expanduser') as mock_expanduser:
+            mock_expanduser.return_value = '/home/testuser'
+            result = cd_args_parse(['~'])
+            self.assertIsInstance(result, Path)
+            self.assertEqual(str(result), '/home/testuser')
+            mock_expanduser.assert_called_once_with('~')
 
-        with self.assertRaises(Exception) as context:
-            cd_args_parse(['/nonexistent/path'])
-        self.assertEqual(str(context.exception), "Директория /nonexistent/path не существует")
-
-    @patch('src.sub_functions.cd_dependences.Path')
-    def test_cd_args_parse_file_instead_of_directory(self, mock_path):
-        """Тест парсинга аргументов cd с путем к файлу вместо директории"""
-        mock_path_instance = MagicMock()
-        mock_path_instance.exists.return_value = True
-        mock_path_instance.is_dir.return_value = False
-        mock_path_instance.__str__ = lambda x: '/some/file.txt'
-        mock_path.return_value = mock_path_instance
-
-        with self.assertRaises(Exception) as context:
-            cd_args_parse(['/some/file.txt'])
-        self.assertEqual(str(context.exception), "/some/file.txt не является директорией")
-
-    @patch('src.sub_functions.cd_dependences.Path')
-    def test_cd_args_parse_valid_directory(self, mock_path):
-        """Тест парсинга аргументов cd с валидной директорией"""
-        mock_path_instance = MagicMock()
-        mock_path_instance.exists.return_value = True
-        mock_path_instance.is_dir.return_value = True
-        mock_path.return_value = mock_path_instance
-
-        result = cd_args_parse(['/valid/directory'])
-        self.assertEqual(result, mock_path_instance)
+    def test_cd_args_parse_path_with_quotes(self):
+        """Тест парсинга аргументов cd с путем в кавычках"""
+        result = cd_args_parse(["'/path/with spaces'"])
+        self.assertIsInstance(result, Path)
+        self.assertEqual(str(result), "'/path/with spaces'")
 
     @patch('src.sub_functions.cd_dependences.os')
     def test_cd_realisation_home_directory_success(self, mock_os):
         """Тест выполнения cd с домашним каталогом"""
         mock_os.path.expanduser.return_value = '/home/testuser'
+        mock_os.path.abspath.return_value = '/home/testuser'
         cd_realisation('~')
         mock_os.path.expanduser.assert_called_once_with('~')
         mock_os.chdir.assert_called_once_with('/home/testuser')
@@ -89,9 +60,8 @@ class TestCdCommands(unittest.TestCase):
         mock_os.path.abspath.assert_called_once_with('/some/path')
         mock_os.chdir.assert_called_once_with('/absolute/path')
 
-    @patch('builtins.print')
     @patch('src.sub_functions.cd_dependences.os')
-    def test_cd_realisation_permission_error(self, mock_os, _):
+    def test_cd_realisation_permission_error(self, mock_os):
         """Тест выполнения cd с ошибкой прав доступа"""
         mock_os.chdir.side_effect = PermissionError("Access denied")
         mock_os.path.abspath.return_value = '/restricted/path'
@@ -99,9 +69,8 @@ class TestCdCommands(unittest.TestCase):
         with self.assertRaises(PermissionError):
             cd_realisation('/restricted/path')
 
-    @patch('builtins.print')
     @patch('src.sub_functions.cd_dependences.os')
-    def test_cd_realisation_file_not_found_error(self, mock_os, _):
+    def test_cd_realisation_file_not_found_error(self, mock_os):
         """Тест выполнения cd с ошибкой файл не найден"""
         mock_os.chdir.side_effect = FileNotFoundError("No such file")
         mock_os.path.abspath.return_value = '/nonexistent/path'
@@ -109,9 +78,8 @@ class TestCdCommands(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             cd_realisation('/nonexistent/path')
 
-    @patch('builtins.print')
     @patch('src.sub_functions.cd_dependences.os')
-    def test_cd_realisation_general_exception(self, mock_os, _):
+    def test_cd_realisation_general_exception(self, mock_os):
         """Тест выполнения cd с общей ошибкой"""
         mock_os.chdir.side_effect = Exception("Unexpected error")
         mock_os.path.abspath.return_value = '/some/path'
@@ -126,26 +94,38 @@ class TestLsCommands(unittest.TestCase):
     def test_ls_args_parse_no_args(self):
         """Тест парсинга аргументов ls без аргументов"""
         result = ls_args_parse([])
-        expected = {'path': '', 'long': False}
-        self.assertEqual(result, expected)
+        self.assertEqual(result.path, os.getcwd())
+        self.assertFalse(result.long)
 
     def test_ls_args_parse_with_path(self):
         """Тест парсинга аргументов ls с путем"""
         result = ls_args_parse(['/some/path'])
-        expected = {'path': '/some/path', 'long': False}
-        self.assertEqual(result, expected)
+        self.assertEqual(result.path, '/some/path')
+        self.assertFalse(result.long)
 
     def test_ls_args_parse_with_long_flag(self):
         """Тест парсинга аргументов ls с флагом -l"""
         result = ls_args_parse(['-l'])
-        expected = {'path': '', 'long': True}
-        self.assertEqual(result, expected)
+        self.assertEqual(result.path, os.getcwd())
+        self.assertTrue(result.long)
+
+    def test_ls_args_parse_with_long_flag_full(self):
+        """Тест парсинга аргументов ls с флагом --long"""
+        result = ls_args_parse(['--long'])
+        self.assertEqual(result.path, os.getcwd())
+        self.assertTrue(result.long)
 
     def test_ls_args_parse_with_path_and_long(self):
         """Тест парсинга аргументов ls с путем и флагом -l"""
         result = ls_args_parse(['-l', '/some/path'])
-        expected = {'path': '/some/path', 'long': True}
-        self.assertEqual(result, expected)
+        self.assertEqual(result.path, '/some/path')
+        self.assertTrue(result.long)
+
+    def test_ls_args_parse_with_path_and_long_reversed(self):
+        """Тест парсинга аргументов ls с путем и флагом -l в обратном порядке"""
+        result = ls_args_parse(['/some/path', '-l'])
+        self.assertEqual(result.path, '/some/path')
+        self.assertTrue(result.long)
 
     def test_check_access_rights(self):
         """Тест определения прав доступа к файлу"""
@@ -423,6 +403,7 @@ class TestLsCommands(unittest.TestCase):
 
         mock_file.stat.return_value = mock_stat
         return mock_file
+
 
 if __name__ == '__main__':
     unittest.main()

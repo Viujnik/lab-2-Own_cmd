@@ -1,3 +1,4 @@
+import argparse
 import logging
 import os
 from pathlib import Path
@@ -7,47 +8,28 @@ from pathlib import Path
 
 def cd_args_parse(args: list[str]) -> Path:
     """Проверяет аргумент path функции cd. Возвращает этот путь класса Path или ошибку."""
-    if not args:  # Проверяем, что args не пустой
-        error = "Для команды cd ожидается аргумент - path"
-        raise Exception(error)
+    parser = argparse.ArgumentParser(prog="cd", description="Смена текущей директории.", exit_on_error=False)
+    parser.add_argument("path", help="Путь для смены каталога.")
+    try:
+        parsed_args = parser.parse_args(args)
+        path_str = parsed_args.path
+        if path_str == "~":
+            path_str = os.path.expanduser("~")
 
-    path_str = args[0]
-    if not path_str:  # Проверяем, что путь - не пустая строка
-        error = "Путь не может быть пустой строкой"
-        raise Exception(error)
+        return Path(path_str)
 
-    if path_str == "~":
-        return Path(os.path.expanduser("~"))
-
-    if path_str.startswith("'") and path_str.endswith("'"):  # Остается только path
-        path_str = path_str[1:-1]
-
-    path = Path(path_str)
-
-    # Проверяем существование пути
-    if not path.exists():
-        error_msg = f"Директория {path} не существует"
-        raise Exception(error_msg)
-
-    # Проверяем, что это директория
-    if not path.is_dir():
-        error_msg = f"{path} не является директорией"
-        raise Exception(error_msg)
-
-
-    return path
-
+    except argparse.ArgumentError as e:
+        # Перехватываем ошибки парсинга
+        raise Exception(f"Ошибка парсинга команды cd: {e}")
 
 def cd_realisation(path: str) -> None:
     """Функция для смены директории для аргумента path. Тут всё очевидно."""
     try:
         if path == "~":
-            new_path = os.path.expanduser("~")
-            os.chdir(new_path)
-        else:
-            # Получаем абсолютный путь
-            abs_path = os.path.abspath(path)
-            os.chdir(abs_path)
+            path = os.path.expanduser("~")
+
+        abs_path = os.path.abspath(path)
+        os.chdir(abs_path)
 
     except PermissionError as e:
         logging.error(e)

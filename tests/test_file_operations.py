@@ -23,100 +23,37 @@ sys.path.insert(0, project_root)
 class TestFileOperationsWithMocks(unittest.TestCase):
     """Тесты для файловых операций с использованием моков"""
 
-    @patch('src.sub_functions.cp_dependences.Path')
-    def test_cp_args_parse_valid(self, mock_path):
+    def test_cp_args_parse_valid(self):
         """Тест парсинга аргументов cp с валидными путями"""
-        # Используем подход из config_tests.py
-        mock_src = MagicMock()
-        mock_src.exists.return_value = True
-        mock_src.__str__ = MagicMock(return_value='source.txt')
-
-        mock_dst = MagicMock()
-        mock_dst.exists.return_value = True
-        mock_dst.__str__ = MagicMock(return_value='dest_dir')
-
-        mock_path.side_effect = [mock_src, mock_dst]
-
         result = cp_args_parse(['source.txt', 'dest_dir'])
         self.assertEqual(result, ['source.txt', 'dest_dir'])
-
-    @patch('src.sub_functions.cp_dependences.Path')
-    def test_cp_args_parse_nonexistent_source(self, mock_path):
-        """Тест парсинга аргументов cp с несуществующим исходным файлом"""
-        mock_src = MagicMock()
-        mock_src.exists.return_value = False
-        mock_path.return_value = mock_src
-
-        with self.assertRaises(FileNotFoundError):
-            cp_args_parse(['/nonexistent/file', 'dest_dir'])
-
-    @patch('src.sub_functions.cp_dependences.Path')
-    def test_cp_args_parse_nonexistent_destination(self, mock_path):
-        """Тест парсинга аргументов cp с несуществующей директорией назначения"""
-        mock_src = MagicMock()
-        mock_src.exists.return_value = True
-
-        mock_dst = MagicMock()
-        mock_dst.exists.return_value = False
-
-        mock_path.side_effect = [mock_src, mock_dst]
-
-        with self.assertRaises(NotADirectoryError):
-            cp_args_parse(['source.txt', '/nonexistent/dir'])
 
     def test_cp_args_parse_insufficient_args(self):
         """Тест парсинга аргументов cp с недостаточным количеством аргументов"""
         with self.assertRaises(Exception) as context:
             cp_args_parse(['source.txt'])
-        self.assertIn("Введите 2 аргумента", str(context.exception))
+        # Проверяем, что это ошибка argparse о недостающих аргументах
+        self.assertIn("required", str(context.exception).lower())
 
-    @patch('os.path.isdir')
-    @patch('os.path.exists')
-    def test_mv_args_parse_valid(self, mock_exists, mock_isdir):
+    def test_mv_args_parse_valid(self):
         """Тест парсинга аргументов mv с валидными путями"""
-        mock_exists.side_effect = [True, True]  # Оба пути существуют
-        mock_isdir.return_value = True  # Второй путь - директория
-
         result = mv_args_parse(['source.txt', 'dest_dir'])
         self.assertEqual(result, ['source.txt', 'dest_dir'])
-
-    @patch('os.path.isdir')
-    @patch('os.path.exists')
-    def test_mv_args_parse_nonexistent_source(self, mock_exists, mock_isdir):
-        """Тест парсинга аргументов mv с несуществующим исходным файлом"""
-        mock_exists.side_effect = [False, True]  # Исходный файл не существует
-        mock_isdir.return_value = True  # Второй путь - директория
-
-        with self.assertRaises(Exception) as context:
-            mv_args_parse(['/nonexistent/file', 'dest_dir'])
-        self.assertIn("Файла /nonexistent/file не существует", str(context.exception))
-
-    @patch('os.path.exists')
-    @patch('os.path.isdir')
-    def test_mv_args_parse_not_directory(self, mock_isdir, mock_exists):
-        """Тест парсинга аргументов mv когда назначение не директория"""
-        mock_exists.return_value = True
-        mock_isdir.return_value = False  # Назначение не директория
-
-        with self.assertRaises(Exception) as context:
-            mv_args_parse(['source.txt', 'not_a_dir'])
-        self.assertIn("не является директорией", str(context.exception))
 
     def test_mv_args_parse_insufficient_args(self):
         """Тест парсинга аргументов mv с недостаточным количеством аргументов"""
         with self.assertRaises(Exception) as context:
             mv_args_parse(['source.txt'])
-        self.assertIn("2 аргумента", str(context.exception))
+        # Проверяем, что это ошибка argparse о недостающих аргументах
+        self.assertIn("required", str(context.exception).lower())
 
     @patch('os.stat')
     def test_filesystem_check_same_device(self, mock_stat):
         """Тест проверки файловой системы - файлы на одном устройстве"""
         mock_stat1 = MagicMock()
         mock_stat1.st_dev = 1
-
         mock_stat2 = MagicMock()
         mock_stat2.st_dev = 1
-
         mock_stat.side_effect = [mock_stat1, mock_stat2]
 
         result = filesystem_check('/path1', '/path2')
@@ -127,10 +64,8 @@ class TestFileOperationsWithMocks(unittest.TestCase):
         """Тест проверки файловой системы - файлы на разных устройствах"""
         mock_stat1 = MagicMock()
         mock_stat1.st_dev = 1
-
         mock_stat2 = MagicMock()
         mock_stat2.st_dev = 2
-
         mock_stat.side_effect = [mock_stat1, mock_stat2]
 
         result = filesystem_check('/path1', '/path2')
@@ -144,36 +79,35 @@ class TestFileOperationsWithMocks(unittest.TestCase):
         result = filesystem_check('/path1', '/path2')
         self.assertFalse(result)
 
-    @patch('src.sub_functions.rm_dependences.os.path.normpath')
-    def test_rm_args_parse_valid_without_flag(self, mock_normpath):
+    def test_rm_args_parse_valid_without_flag(self):
         """Тест парсинга аргументов rm без флага -r"""
-        mock_normpath.return_value = '/test/path'
-
         result = rm_args_parse(['/test/path'])
         self.assertEqual(result, {
-            "r_flag": False,
+            "recursive": False,
             "path": '/test/path'
         })
 
-    @patch('src.sub_functions.rm_dependences.os.path.normpath')
-    def test_rm_args_parse_valid_with_flag(self, mock_normpath):
+    def test_rm_args_parse_valid_with_flag(self):
         """Тест парсинга аргументов rm с флагом -r"""
-        mock_normpath.return_value = '/test/path'
-
         result = rm_args_parse(['-r', '/test/path'])
         self.assertEqual(result, {
-            "r_flag": True,
+            "recursive": True,
             "path": '/test/path'
         })
 
-    @patch('src.sub_functions.rm_dependences.os.path.normpath')
-    def test_rm_args_parse_mixed_order(self, mock_normpath):
-        """Тест парсинга аргументов rm со смешанным порядком"""
-        mock_normpath.return_value = '/test/path'
+    def test_rm_args_parse_valid_with_long_flag(self):
+        """Тест парсинга аргументов rm с флагом --recursive"""
+        result = rm_args_parse(['--recursive', '/test/path'])
+        self.assertEqual(result, {
+            "recursive": True,
+            "path": '/test/path'
+        })
 
+    def test_rm_args_parse_mixed_order(self):
+        """Тест парсинга аргументов rm со смешанным порядком"""
         result = rm_args_parse(['/test/path', '-r'])
         self.assertEqual(result, {
-            "r_flag": True,
+            "recursive": True,
             "path": '/test/path'
         })
 
@@ -181,7 +115,8 @@ class TestFileOperationsWithMocks(unittest.TestCase):
         """Тест парсинга аргументов rm без пути"""
         with self.assertRaises(Exception) as context:
             rm_args_parse(['-r'])
-        self.assertIn("Пустой аргумент пути/файла", str(context.exception))
+        # Проверяем, что это ошибка argparse о недостающих аргументах
+        self.assertIn("required", str(context.exception).lower())
 
     @patch('src.sub_functions.undo_dependences.add_to_history')
     @patch('src.sub_functions.undo_dependences.shutil.copy2')
@@ -326,7 +261,7 @@ class TestFileOperationsWithMocks(unittest.TestCase):
         mv_with_history("source.txt", "dest.txt")
 
         # Проверяем вызовы
-        mock_move.assert_called_once_with("source.txt", "dest.txt")  # Теперь работает!
+        mock_move.assert_called_once_with("source.txt", "dest.txt")
         mock_add_history.assert_called_once()
 
     def test_undo_args_parse_default(self):
@@ -341,9 +276,11 @@ class TestFileOperationsWithMocks(unittest.TestCase):
 
     def test_undo_args_parse_invalid_option(self):
         """Тест парсинга аргументов undo с неверной опцией"""
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaises(Exception) as context:
             undo_args_parse(["-x"])
-        self.assertIn("неверная опция", str(context.exception))
+        # Проверяем, что это ошибка argparse о нераспознанных аргументах
+        self.assertIn("unrecognized", str(context.exception).lower())
+
 
     @patch('src.sub_functions.undo_dependences.read_history')
     def test_undo_realisation_no_history(self, mock_read):
@@ -358,7 +295,7 @@ class TestFileOperationsWithMocks(unittest.TestCase):
     @patch('src.sub_functions.undo_dependences.undo_command')
     def test_undo_realisation_success(self, mock_undo_command, mock_save_history, mock_read_history):
         """Тест успешной отмены команд"""
-        # Мокаем историю с командами для отмены
+        # Мокаем историю с командами для отменя
         mock_history = [
             {"command": "cp", "undo_data": {"src": "/src", "dst": "/dst"}},
             {"command": "rm", "undo_data": {"path": "/path", "trash_path": "/trash"}}
@@ -476,9 +413,10 @@ class TestUndoFunctionsWithMocks(unittest.TestCase):
 
         self.assertFalse(result)
 
+
     @patch('src.sub_functions.undo_dependences.shutil.move')
     @patch('src.sub_functions.undo_dependences.Path')
-    @patch('builtins.input')  # Добавляем мок для input
+    @patch('builtins.input')
     def test_undo_mv(self, mock_input, mock_path, mock_move):
         """Тест отмены перемещения файла"""
         # Настраиваем моки

@@ -1,3 +1,4 @@
+import argparse
 import os
 import logging
 from pathlib import Path
@@ -6,25 +7,20 @@ from pathlib import Path
 # Здесь собраны функции, необходимые основной функции - mv, чтобы не загрязнять и так грязный main
 
 def mv_args_parse(args: list[str]) -> list[str]:
-    if len(args) != 2:
-        error = "Ошибка: После команды 'mv' введите 2 аргумента - путь к файлу и каталог, куда переместить файл."
-        raise Exception(error)
-    else:
-        path_from, path_to = args
-        if path_from.startswith("'") and path_from.endswith("'"):
-            path_from = path_from[1:-1]
-        if path_to.startswith("'") and path_to.endswith("'"):
-            path_to = path_to[1:-1]
-        if not os.path.isdir(path_to):
-            error = f"Ошибка: {path_to} не является директорией, введите директория куда переместить файл."
-            raise Exception(error)
-        if not os.path.exists(path_from):
-            error = f"Файла {path_from} не существует."
-            raise Exception(error)
-        if not os.path.exists(path_to):
-            error = f"Директории {path_from} не существует."
-            raise Exception(error)
-        return [path_from, path_to]
+    """Парсит аргументы команды mv"""
+    parser = argparse.ArgumentParser(
+        prog="mv",
+        description="Перемещает файл из path_from в path_to",
+        exit_on_error=False
+    )
+    parser.add_argument("path_from", help="Путь откуда переместить")
+    parser.add_argument("path_to", help="Путь куда переместить")
+
+    try:
+        parsed_args = parser.parse_args(args)
+        return [parsed_args.path_from, parsed_args.path_to]
+    except SystemExit:
+        raise Exception("Ошибка парсинга команды mv: требуется 2 аргумента - путь_откуда и путь_куда")
 
 
 def filesystem_check(path_from: str, path_to: str) -> bool:

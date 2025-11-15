@@ -1,3 +1,4 @@
+import argparse
 import re
 from pathlib import Path
 
@@ -5,37 +6,30 @@ from pathlib import Path
 # Здесь собраны функции, необходимые основной функции - grep, чтобы не загрязнять и так грязный main
 
 
-def grep_args_parse(args: list[str]) -> dict[str, str]:
-    if len(args) < 2:
-        raise SyntaxError("Используйте верный синтаксис: grep [OPTIONS] PATTERN PATH")
+def grep_args_parse(args: list[str]):
+    parser = argparse.ArgumentParser(prog="grep", description="Поиск текста в файлах", exit_on_error=False)
+    parser.add_argument("-r", "--recursive", action="store_true", help="Рекурсивный поиск в директории")
+    parser.add_argument("-i", "--ignore-case", action="store_true", help="Игнорировать регистр")
+    parser.add_argument("pattern", help="Шаблон для поиска")
+    parser.add_argument("path", help="Файл или директория для поиска")
+    try:
+        return {
+            "path": parser.parse_args(args).path,
+            "recursive": parser.parse_args(args).recursive,
+            "ignore_case": parser.parse_args(args).ignore_case,
+            "pattern": parser.parse_args(args).pattern,
+        }
+    except argparse.ArgumentError as e:
+        raise Exception(f"Ошибка парсинга команды grep: {e}")
 
-    args_value = {"options": '', "pattern": '', "path": ''}
-    i = 0
 
-    while i < len(args):
-        arg = args[i]
-        if arg in ['-r', '-i']:
-            args_value["options"] += arg + ' '
-        elif not args_value["pattern"]:
-            args_value["pattern"] = arg
-        elif not args_value["path"]:
-            if arg.startswith("'") and arg.endswith("'"):
-                arg = arg[1:-1]
-            args_value["path"] = arg
-        i += 1
-
-    if not args_value["pattern"] or not args_value["path"]:
-        raise SyntaxError("Необходимо указать PATTERN и PATH")
-
-    return args_value
 
 
 def grep_realisation(args: dict[str, str]) -> None:
-    options = args["options"].split()
     pattern = str(args["pattern"])
     path = str(args["path"])
-    recursive = '-r' in options
-    ignore_case = '-i' in options
+    recursive = args.get("recursive", False)
+    ignore_case = args.get("ignore_case", False)
     flags = re.IGNORECASE if ignore_case else 0
 
     try:

@@ -1,3 +1,4 @@
+import argparse
 import logging
 import shutil
 from pathlib import Path
@@ -22,18 +23,24 @@ def init_trash() -> None:
 
 def undo_args_parse(args: list[str]) -> dict[str, int]:
     """Парсит аргументы команды undo"""
-    args_value = {
-        "steps": 1
-    }
+    parser = argparse.ArgumentParser(
+        prog="undo",
+        description="Отменяет step предыдущих команд cp, mv, rm.",
+        exit_on_error=False
+    )
+    parser.add_argument(
+        "step",
+        nargs="?",
+        default=1,
+        type=int,
+        help="Количество последних команд для отмены"
+    )
 
-    for arg in args:
-        if arg.isdigit():
-            args_value["steps"] = int(arg)
-        elif arg.startswith('-'):
-            error_msg = f"undo: неверная опция '{arg}'"
-            raise ValueError(error_msg)
-
-    return args_value
+    try:
+        parsed_args = parser.parse_args(args)
+        return {"steps": parsed_args.step}
+    except SystemExit:
+        raise Exception("Ошибка парсинга команды undo: неверный аргумент")
 
 
 def read_history() -> list:

@@ -1,3 +1,4 @@
+import argparse
 import logging
 from pathlib import Path
 from datetime import datetime
@@ -145,25 +146,10 @@ def save_history(history: list) -> None:
 
 
 def history_args_parse(args: list[str]) -> dict[str, int]:
-    """Парсит аргументы команды history"""
-    args_value = {
-        "count": 10,
-        "clear": 0
-    }
-
-    i = 0
-    while i < len(args):
-        arg = args[i]
-        if arg == "-c":
-            args_value["clear"] = True
-        elif arg.isdigit():
-            args_value["count"] = int(arg)
-        elif arg.startswith('-'):
-            error_msg = f"history: неверная опция '{arg}'"
-            raise ValueError(error_msg)
-        i += 1
-
-    return args_value
+    parser = argparse.ArgumentParser(prog="history", description="Показывает count последних команд и очищает историю если нужно.", exit_on_error=False)
+    parser.add_argument("count", nargs="?", default=10, help="Количество последних команд для вывода.")
+    parser.add_argument("clear", nargs="?", default=0, help="Определяет очищать ли историю(0/1).")
+    return {"count": int(parser.parse_args(args).count), "clear": int(parser.parse_args(args).clear)}
 
 
 def history_realisation(args: dict[str, int]) -> None:
